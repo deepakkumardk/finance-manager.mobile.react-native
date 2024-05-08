@@ -1,5 +1,7 @@
 import {NativeModules} from 'react-native';
 import {default as smsSenders} from './smsSenders.json';
+import {getTransformedSmsList} from './transformer';
+import {orderByAccount} from './finance';
 const {SmsModule: RNSmsModule} = NativeModules;
 
 const sendersCode = Object.keys(smsSenders);
@@ -14,8 +16,11 @@ export const SmsModule = {
       }
       return sendersCode.includes(item.address);
     });
-    console.log('smsList2', smsList.length);
 
-    return smsList;
+    const transformedList = getTransformedSmsList(smsList);
+    const orderedList = orderByAccount(transformedList);
+    console.log('getFinanceSms: -> orderedList', orderedList.accountSummary);
+
+    return orderedList;
   },
 };

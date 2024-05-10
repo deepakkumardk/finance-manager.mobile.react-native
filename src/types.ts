@@ -25,8 +25,9 @@ export type TagsDataProps = {
 };
 
 export type AccountDataInfo = {
-  list: KeywordData[];
+  account?: string;
   bankName?: string;
+  list: KeywordData[];
   currentBalance?: number;
   lastReportedBalance?: number;
 };

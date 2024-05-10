@@ -76,8 +76,9 @@ export function orderByAccount(tagsData: typeof tags) {
         ...accountData.list,
         {
           date_debug: DateUtils.format(item.rawSms.date),
+          date_display: DateUtils.format(item.rawSms.date, 'd LLL, HH:mm'),
           text_debug: item.rawSms.body,
-          // rawSms: item.rawSms,
+          rawSms: item.rawSms,
           extractedData: item.extractedData,
         } as KeywordData,
       ];
@@ -92,11 +93,11 @@ export function orderByAccount(tagsData: typeof tags) {
     );
 
     return {
-      bankName: accountWiseSmsData[key].bankName,
       account: key,
-      balance: accountWiseSmsData[key].currentBalance,
-      lastReportedBalance: accountWiseSmsData[key].lastReportedBalance,
       list: accountWiseSmsData[key].list,
+      bankName: accountWiseSmsData[key].bankName,
+      currentBalance: accountWiseSmsData[key].currentBalance,
+      lastReportedBalance: accountWiseSmsData[key].lastReportedBalance,
     };
   });
 

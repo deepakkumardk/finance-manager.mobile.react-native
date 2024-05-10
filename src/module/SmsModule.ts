@@ -19,7 +19,6 @@ export const SmsModule = {
 
     const transformedList = getTransformedSmsList(smsList);
     const orderedList = orderByAccount(transformedList);
-    console.log('getFinanceSms: -> orderedList', orderedList.accountSummary);
 
     return orderedList;
   },

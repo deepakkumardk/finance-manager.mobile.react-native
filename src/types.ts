@@ -5,7 +5,7 @@ export type FinanceDataProps = {
   amount?: number;
   availableBalance?: string;
   bankName?: string;
-  bankAccount?: string;
+  account?: string;
   senderUpi?: string;
   type?: 'Debit' | 'Credit' | 'Balance';
 };
@@ -28,6 +28,6 @@ export type AccountDataInfo = {
   account?: string;
   bankName?: string;
   list: KeywordData[];
-  currentBalance?: number;
+  availableBalance?: number;
   lastReportedBalance?: number;
 };

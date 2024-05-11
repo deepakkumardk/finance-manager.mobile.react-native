@@ -20,7 +20,7 @@ export function orderByAccount(tagsData: typeof tags) {
       return 0;
     })
     .forEach(item => {
-      const accountNumber = item.extractedData.bankAccount;
+      const accountNumber = item.extractedData.account;
       if (!accountNumber) {
         return;
       }
@@ -49,7 +49,7 @@ export function orderByAccount(tagsData: typeof tags) {
         accountData = {
           list: [],
           bankName: '',
-          currentBalance: 0,
+          availableBalance: 0,
           lastReportedBalance: 0,
         };
       }
@@ -61,15 +61,15 @@ export function orderByAccount(tagsData: typeof tags) {
         item.extractedData.availableBalance ||
         item.extractedData.type === 'Balance'
       ) {
-        accountData.currentBalance = accountData.lastReportedBalance = Number(
+        accountData.availableBalance = accountData.lastReportedBalance = Number(
           item.extractedData.availableBalance,
         );
       } else if (item.extractedData.type === 'Debit') {
         // @ts-ignore
-        accountData.currentBalance -= Number(item.extractedData.amount);
+        accountData.availableBalance -= Number(item.extractedData.amount);
       } else if (item.extractedData.type === 'Credit') {
         // @ts-ignore
-        accountData.currentBalance += Number(item.extractedData.amount);
+        accountData.availableBalance += Number(item.extractedData.amount);
       }
 
       accountData.list = [
@@ -91,12 +91,14 @@ export function orderByAccount(tagsData: typeof tags) {
       'orderByAccount -> accountData',
       accountWiseSmsData[key].list.length,
     );
+    let availableBalance = parseInt(accountWiseSmsData[key].availableBalance);
 
     return {
       account: key,
       list: accountWiseSmsData[key].list,
       bankName: accountWiseSmsData[key].bankName,
-      currentBalance: accountWiseSmsData[key].currentBalance,
+      availableBalance,
+      availableBalanceDisplay: availableBalance?.toLocaleString(),
       lastReportedBalance: accountWiseSmsData[key].lastReportedBalance,
     };
   });

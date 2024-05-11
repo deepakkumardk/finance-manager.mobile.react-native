@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-import {Surface, Text} from 'react-native-paper';
 import {FlashList} from '@shopify/flash-list';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {SmsModule} from '../../module';
 import {AccountDataInfo} from '../../types';
 import SummaryItem from './components/SummaryItem';
+import {AllAccountsCarousel} from './components/AllAccountsCarousel';
+import {Text} from 'react-native-paper';
 
-export const Dashboard = ({navigation, route}: any) => {
+export const Dashboard = ({navigation}: any) => {
   const [accountSummaryList, setAccountSummaryList] = useState<
     AccountDataInfo[]
   >([]);
@@ -23,6 +24,11 @@ export const Dashboard = ({navigation, route}: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <AllAccountsCarousel accountSummaryList={accountSummaryList} />
+      <View style={styles.transactionContainer}>
+        <Text variant="headlineLarge">{'Recent Transaction'}</Text>
+        <Text variant="bodySmall">{'See All'}</Text>
+      </View>
       <FlashList
         data={accountSummaryList}
         keyExtractor={item => item.account || ''}
@@ -44,17 +50,11 @@ export const Dashboard = ({navigation, route}: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 8,
   },
-  row: {
-    justifyContent: 'space-between',
+  transactionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
-  },
-  searchbar: {
-    width: '96%',
-  },
-  typeIcon: {
-    paddingHorizontal: 6,
+    justifyContent: 'space-between',
   },
 });

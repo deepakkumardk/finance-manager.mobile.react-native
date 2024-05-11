@@ -94,7 +94,7 @@ const financeFeatureExtractor = (text: string) => {
     amount,
     availableBalance,
     bankName: fullBankName,
-    bankAccount,
+    account: bankAccount,
     senderUpi,
     type,
   } as FinanceDataProps;

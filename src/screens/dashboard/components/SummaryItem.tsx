@@ -1,13 +1,13 @@
 import React, {memo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
-import {Surface, Text, TouchableRipple} from 'react-native-paper';
-import {AccountDataInfo, KeywordData} from '../../../types';
+import {Surface, Text} from 'react-native-paper';
+import {AccountDataInfo} from 'src/types';
 
 const SummaryItem = ({
   account,
   bankName,
-  currentBalance,
+  availableBalance,
   onPress,
 }: AccountDataInfo & {
   onPress: () => void;
@@ -21,7 +21,7 @@ const SummaryItem = ({
       <View />
       <Text>{account}</Text>
       <Text>{bankName}</Text>
-      <Text>{currentBalance}</Text>
+      <Text>{availableBalance}</Text>
     </TouchableOpacity>
   </Surface>
 );

@@ -6,6 +6,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {SmsModule} from './src/module';
 import {NavigationContainer} from '@react-navigation/native';
 import {RootNavigator} from './src/navigation/RootNavigator';
+import {PaperProvider} from 'react-native-paper';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -14,14 +15,12 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  useEffect(() => {
-    SmsModule.getFinanceSms();
-  }, []);
-
   return (
-    <NavigationContainer>
-      <RootNavigator />
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 

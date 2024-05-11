@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 
-import {Surface, Text} from 'react-native-paper';
 import {FlashList} from '@shopify/flash-list';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {AccountDataInfo, KeywordData} from '../../types';
+import {KeywordData} from 'src/types';
 import TransactionItem from './components/TransactionItem';
 
 export const AccountTransactions = ({navigation, route}: any) => {

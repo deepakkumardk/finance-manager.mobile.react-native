@@ -10,7 +10,8 @@ const AccountCard = ({
   account,
   bankName,
   availableBalance,
-  lastReportedBalance,
+  availableBalanceDisplay,
+  lastReportedBalanceDisplay,
   onPress,
 }: AccountDataInfo & {
   onPress: () => void;
@@ -22,22 +23,22 @@ const AccountCard = ({
         console.log('onPress', onPress);
         onPress();
       }}>
-      <View style={styles.firstHalf}>
+      <Surface style={styles.firstHalf}>
         <Text variant="labelMedium">{bankName}</Text>
         <Text variant="labelMedium">{account}</Text>
         <Text variant="labelMedium">{'Available Balance'}</Text>
         <Text variant="headlineLarge">
           {RS}
           {availableBalance && availableBalance > 0
-            ? availableBalance
-            : lastReportedBalance}
+            ? availableBalanceDisplay
+            : lastReportedBalanceDisplay}
         </Text>
         <Text variant="labelSmall">
           {'as of '}
           {'Date'}
         </Text>
-      </View>
-      <View style={styles.secondHalf}>
+      </Surface>
+      <Surface style={styles.secondHalf}>
         <Text>{'in'}</Text>
         <Text>
           {RS}
@@ -49,7 +50,7 @@ const AccountCard = ({
           {RS}
           {'123'}
         </Text>
-      </View>
+      </Surface>
     </TouchableOpacity>
   </Surface>
 );

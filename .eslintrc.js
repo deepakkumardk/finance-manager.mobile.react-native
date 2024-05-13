@@ -3,5 +3,6 @@ module.exports = {
   extends: '@react-native',
   rules: {
     'no-useless-escape': 'off',
+    radix: 'off',
   },
 };

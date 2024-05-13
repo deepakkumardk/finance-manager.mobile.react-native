@@ -5,6 +5,8 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 
 import {AccountDataInfo} from 'src/types';
 import AccountCard from './AccountCard';
+import {Text} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 
@@ -13,6 +15,7 @@ export const AllAccountsCarousel = ({
 }: {
   accountSummaryList: AccountDataInfo[];
 }) => {
+  const navigation = useNavigation();
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const ref = useRef<any>();
 
@@ -20,18 +23,20 @@ export const AllAccountsCarousel = ({
     <Carousel
       ref={ref}
       data={accountSummaryList}
-      keyExtractor={item => item.account}
+      //   keyExtractor={item => item.account + ''}
       renderItem={({item}) => (
         <AccountCard
           {...item}
           onPress={() => {
-            //
+            console.log('Dashboard -> onPress');
+            // @ts-ignore
+            navigation.navigate('AccountTransactions', item);
           }}
         />
       )}
       itemWidth={width}
       sliderWidth={width}
-      sliderHeight={width}
+      //   sliderHeight={width}
       loop={true}
       firstItem={0}
       containerCustomStyle={styles.container}
@@ -49,6 +54,7 @@ export const AllAccountsCarousel = ({
         containerStyle={styles.container}
         inactiveDotStyle={styles.inactiveDotStyle}
       />
+      <Text>SLKDJf</Text>
     </Carousel>
   );
 };
@@ -56,10 +62,11 @@ export const AllAccountsCarousel = ({
 const styles = StyleSheet.create({
   contentContainer: {
     marginBottom: 1,
-    paddingVertical: 10,
+    // paddingVertical: 10,
   },
   container: {
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
+    // paddingVertical: 41,
     overflow: 'visible',
   },
   paginationContainer: {

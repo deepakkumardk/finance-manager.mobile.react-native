@@ -1,5 +1,27 @@
 import {SMSData} from './module';
 
+export type BankDataInfo = {
+  [key: string]: AccountDataInfo;
+};
+
+export type AccountDataInfo = {
+  account?: string;
+  bankName?: string;
+  fullBankName?: string;
+  list: KeywordData[];
+  availableBalance?: number;
+  lastReportedBalance?: number;
+  availableBalanceDisplay?: string;
+  lastReportedBalanceDisplay?: string;
+};
+
+export type KeywordData = {
+  text_debug?: string;
+  date_debug?: string;
+  rawSms: SMSData;
+  extractedData: FinanceDataProps;
+};
+
 export type FinanceDataProps = {
   amountDisplay?: string;
   amount?: number;
@@ -10,24 +32,9 @@ export type FinanceDataProps = {
   type?: 'Debit' | 'Credit' | 'Balance';
 };
 
-export type KeywordData = {
-  text_debug?: string;
-  date_debug?: string;
-  rawSms: SMSData;
-  extractedData: FinanceDataProps;
-};
-
 export type TagsDataProps = {
   [key: string]: {
     keywords: string[];
     data: KeywordData[];
   };
-};
-
-export type AccountDataInfo = {
-  account?: string;
-  bankName?: string;
-  list: KeywordData[];
-  availableBalance?: number;
-  lastReportedBalance?: number;
 };

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import {FlashList} from '@shopify/flash-list';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -7,7 +7,8 @@ import {SmsModule} from '../../module';
 import {AccountDataInfo} from '../../types';
 import SummaryItem from './components/SummaryItem';
 import {AllAccountsCarousel} from './components/AllAccountsCarousel';
-import {Text} from 'react-native-paper';
+import {Surface, Text} from 'react-native-paper';
+import {TransactionItem} from 'src/components';
 
 export const Dashboard = ({navigation}: any) => {
   const [accountSummaryList, setAccountSummaryList] = useState<
@@ -16,8 +17,8 @@ export const Dashboard = ({navigation}: any) => {
 
   useEffect(() => {
     const initData = async () => {
-      const list = await SmsModule.getFinanceSms();
-      setAccountSummaryList(list.accountSummary);
+      const res = await SmsModule.getFinanceSms();
+      setAccountSummaryList(res);
     };
     initData();
   }, []);
@@ -25,11 +26,14 @@ export const Dashboard = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <AllAccountsCarousel accountSummaryList={accountSummaryList} />
-      <View style={styles.transactionContainer}>
+      <Surface style={styles.transactionContainer}>
         <Text variant="headlineLarge">{'Recent Transaction'}</Text>
         <Text variant="bodySmall">{'See All'}</Text>
-      </View>
-      <FlashList
+      </Surface>
+      <TransactionItem
+        extractedData={accountSummaryList?.[0]?.list?.[0]?.extractedData ?? {}}
+      />
+      {/* <FlashList
         data={accountSummaryList}
         keyExtractor={item => item.account || ''}
         renderItem={({item}) => (
@@ -42,15 +46,15 @@ export const Dashboard = ({navigation}: any) => {
           />
         )}
         estimatedItemSize={10}
-      />
+      /> */}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 8,
+    // flex: 1,
+    // paddingHorizontal: 8,
   },
   transactionContainer: {
     flexDirection: 'row',

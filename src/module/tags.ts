@@ -31,7 +31,7 @@ export const tags: TagsDataProps = {
     data: [],
   },
   Trains: {
-    keywords: ['PNR'],
+    keywords: ['PNR '],
     data: [],
   },
   Refund: {

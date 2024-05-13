@@ -6,7 +6,6 @@ import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 
@@ -21,8 +20,8 @@ class SmsModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
     override fun getName() = "SmsModule"
 
     @ReactMethod
-    fun getAllSms(sendersCode: ReadableArray, promise: Promise) {
-        val smsList = context.getAllSms(sendersCode)
+    fun getAllSms(promise: Promise) {
+        val smsList = context.getAllSms()
         val writeableArray = convertListMapToWritableArray(smsList)
         promise.resolve(writeableArray)
     }

@@ -18,7 +18,6 @@ const SummaryItem = ({
         console.log('onPress', onPress);
         onPress();
       }}>
-      <View />
       <Text>{account}</Text>
       <Text>{bankName}</Text>
       <Text>{availableBalance}</Text>

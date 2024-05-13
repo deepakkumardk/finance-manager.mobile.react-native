@@ -7,7 +7,7 @@ Object.keys(tags).forEach(key => {
   keys.push(key);
 });
 
-const financeFeatureExtractor = (text: string) => {
+export const financeFeatureExtractor = (text: string) => {
   const findFirstMatch = (regex: RegExp) => {
     return text.match(regex)?.[0];
   };
@@ -104,7 +104,7 @@ export const getTransformedSmsList = (smsList: SMSData[]) => {
   smsList.forEach(item => {
     const body = item.body;
 
-    let isFound = false;
+    let isKeywordMatchFound = false;
     let obj = {} as KeywordData;
 
     for (const key in tags) {
@@ -123,7 +123,7 @@ export const getTransformedSmsList = (smsList: SMSData[]) => {
           body.toLowerCase().includes(keyword.toLowerCase())
         ) {
           taggedItem.data = [...data, obj];
-          isFound = true;
+          isKeywordMatchFound = true;
           break;
         }
         // else if (keyword instanceof RegExp) {
@@ -135,15 +135,15 @@ export const getTransformedSmsList = (smsList: SMSData[]) => {
         //   }
         // }
         else {
-          isFound = false;
+          isKeywordMatchFound = false;
         }
       }
-      if (isFound) {
+      if (isKeywordMatchFound) {
         break;
       }
     }
 
-    if (!isFound) {
+    if (!isKeywordMatchFound) {
       tags.Others.data = [...tags.Others.data, obj];
     }
   });

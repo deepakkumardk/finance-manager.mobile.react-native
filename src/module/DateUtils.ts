@@ -1,8 +1,8 @@
 import {DateTime} from 'luxon';
 
 export const DateUtils = {
-  format: (millis: any, format = DateTime.DATETIME_MED) => {
+  format: (millis: any, format: string = DateTime.DATETIME_MED) => {
     const dt = DateTime.fromMillis(parseInt(millis));
-    return dt.toLocaleString(format);
+    return dt.toFormat(format);
   },
 };

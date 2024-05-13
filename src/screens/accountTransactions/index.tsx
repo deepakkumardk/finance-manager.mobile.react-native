@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {KeywordData} from 'src/types';
-import TransactionItem from './components/TransactionItem';
+import {TransactionItem} from 'src/components';
 
 export const AccountTransactions = ({navigation, route}: any) => {
   const [transactionsList, _] = useState<KeywordData[]>(

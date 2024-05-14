@@ -23,7 +23,7 @@ export const AccountTransactions = ({navigation, route}: any) => {
     <SafeAreaView style={styles.container}>
       <FlashList
         data={transactionsList}
-        keyExtractor={(item, index) => item.rawSms._id + index + ''}
+        keyExtractor={item => item.rawSms.date}
         renderItem={({item}) => <TransactionItem {...item} />}
         estimatedItemSize={10}
       />

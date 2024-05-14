@@ -1,8 +1,8 @@
 export interface SMSData {
   // Primary types
   _id: number;
-  date: number;
-  date_sent: number;
+  date: string;
+  date_sent: string;
 
   address: string;
   body: string;

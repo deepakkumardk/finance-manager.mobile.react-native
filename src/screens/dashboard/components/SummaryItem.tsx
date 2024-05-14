@@ -15,7 +15,6 @@ const SummaryItem = ({
   <Surface style={styles.container}>
     <TouchableOpacity
       onPress={() => {
-        console.log('onPress', onPress);
         onPress();
       }}>
       <Text>{account}</Text>

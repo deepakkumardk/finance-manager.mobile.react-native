@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {Divider, Surface, Text} from 'react-native-paper';
 import {AccountDataInfo} from 'src/types';
@@ -17,12 +17,7 @@ const AccountCard = ({
   onPress: () => void;
 }) => (
   <Surface style={styles.container}>
-    <TouchableOpacity
-      style={styles.innerContainer}
-      onPress={() => {
-        console.log('onPress', onPress);
-        onPress();
-      }}>
+    <TouchableOpacity style={styles.innerContainer} onPress={onPress}>
       <Surface style={styles.firstHalf}>
         <Text variant="labelMedium">{bankName}</Text>
         <Text variant="labelMedium">{account}</Text>
@@ -44,7 +39,7 @@ const AccountCard = ({
           {RS}
           {'123'}
         </Text>
-        <Divider style={{height: 1, marginVertical: 12}} />
+        <Divider style={styles.divider} />
         <Text>{'out'}</Text>
         <Text>
           {RS}
@@ -58,6 +53,10 @@ const AccountCard = ({
 export default memo(AccountCard);
 
 const styles = StyleSheet.create({
+  divider: {
+    height: 1,
+    marginVertical: 12,
+  },
   container: {
     paddingVertical: 4,
     paddingHorizontal: 12,
@@ -70,6 +69,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginVertical: 12,
   },
   firstHalf: {
     flex: 0.75,

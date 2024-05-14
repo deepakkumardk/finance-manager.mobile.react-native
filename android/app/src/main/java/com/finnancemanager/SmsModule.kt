@@ -44,10 +44,11 @@ class SmsModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
             when (value) {
                 is String -> writableMap.putString(key, value)
                 is Int -> writableMap.putInt(key, value)
+                is Long -> writableMap.putString(key, value.toString())
                 is Double -> writableMap.putDouble(key, value)
                 is Boolean -> writableMap.putBoolean(key, value)
                 else -> {
-                    Log.d("TAG", "This type is not supported.")
+                    Log.w("TAG", "This type is not supported.")
                 }
             }
         }

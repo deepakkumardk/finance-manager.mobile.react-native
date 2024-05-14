@@ -3,7 +3,6 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Dashboard} from '../screens/dashboard';
 import {AccountTransactions} from '../screens/accountTransactions';
-import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigation';
 import {useTheme} from 'react-native-paper';
 import {Stats} from 'src/screens/stats';
 import IonIcons from 'react-native-vector-icons/Ionicons';
@@ -13,15 +12,20 @@ import {CreateNew} from 'src/screens/createNew';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-// const Tab = createMaterialBottomTabNavigator();
 
-const BottomTabs = () => {
+const getTabIcon = ({focused, size, name, color}: any) => {
   const {colors} = useTheme();
 
-  const TabIcon = ({focused, name}) => (
-    <IonIcons name={focused ? name : name + '-outline'} size={24} />
+  return (
+    <IonIcons
+      name={focused ? name : name + '-outline'}
+      size={size ?? 24}
+      color={color}
+      // color={focused ? colors.primary : colors.backdrop}
+    />
   );
-
+};
+const BottomTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -43,9 +47,7 @@ const BottomTabs = () => {
         component={Dashboard}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({focused}) => (
-            <TabIcon focused={focused} name={'home'} />
-          ),
+          tabBarIcon: (props: any) => getTabIcon({...props, name: 'home'}),
         }}
       />
       <Tab.Screen
@@ -53,9 +55,7 @@ const BottomTabs = () => {
         component={Stats}
         options={{
           tabBarLabel: 'Stats',
-          tabBarIcon: ({focused}) => (
-            <TabIcon focused={focused} name={'pie-chart'} />
-          ),
+          tabBarIcon: (props: any) => getTabIcon({...props, name: 'pie-chart'}),
         }}
       />
       <Tab.Screen
@@ -63,9 +63,8 @@ const BottomTabs = () => {
         component={CreateNew}
         options={{
           tabBarLabel: 'Create',
-          tabBarIcon: ({focused}) => (
-            <TabIcon focused={focused} name={'add-circle'} />
-          ),
+          tabBarIcon: (props: any) =>
+            getTabIcon({...props, name: 'add-circle'}),
         }}
       />
       <Tab.Screen
@@ -73,9 +72,7 @@ const BottomTabs = () => {
         component={Settings}
         options={{
           tabBarLabel: 'Settings',
-          tabBarIcon: ({focused}) => (
-            <TabIcon focused={focused} name={'settings'} />
-          ),
+          tabBarIcon: (props: any) => getTabIcon({...props, name: 'settings'}),
         }}
       />
     </Tab.Navigator>

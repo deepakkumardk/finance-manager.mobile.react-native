@@ -43,11 +43,6 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
         ] as AccountDataInfo;
 
         if (!Object.hasOwn(accountWiseSmsData, formattedAccount)) {
-          console.log(
-            '.forEach -> formattedAccount',
-            accountNumber,
-            formattedAccount,
-          );
           accountData = {
             list: [],
             bankName: '',
@@ -83,6 +78,8 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
       });
   });
 
+  let allTransactions: KeywordData[] = [];
+
   const accountSummary = Object.entries(accountWiseSmsData).map(
     ([_, accountData]) => {
       // @ts-ignore
@@ -90,13 +87,29 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
       // @ts-ignore
       let lastReportedBalance = parseInt(accountData.lastReportedBalance);
 
+      const sortedList = accountData.list?.sort((a, b) => {
+        const date1 = a.rawSms.date;
+        const date2 = b.rawSms.date;
+        if (date1 < date2) {
+          return 1;
+        }
+        if (date1 > date2) {
+          return -1;
+        }
+        return 0;
+      });
+      allTransactions = allTransactions.concat(sortedList);
+
       return {
         availableBalanceDisplay: availableBalance?.toLocaleString(),
         lastReportedBalanceDisplay: lastReportedBalance?.toLocaleString(),
         ...accountData,
+        list: sortedList,
       };
     },
   );
 
-  return accountSummary;
+  // console.log('orderByAccount -> accountSummary', accountSummary);
+  console.log('orderByAccount -> allTransactions', allTransactions.length);
+  return {accountSummary, allTransactions};
 }

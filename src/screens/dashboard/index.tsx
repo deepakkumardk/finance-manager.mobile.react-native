@@ -1,52 +1,51 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 
-import {FlashList} from '@shopify/flash-list';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {SmsModule} from '../../module';
-import {AccountDataInfo} from '../../types';
-import SummaryItem from './components/SummaryItem';
+import {AccountDataInfo, KeywordData} from '../../types';
 import {AllAccountsCarousel} from './components/AllAccountsCarousel';
-import {Surface, Text} from 'react-native-paper';
+import {Button, Surface, Text} from 'react-native-paper';
 import {TransactionItem} from 'src/components';
 
 export const Dashboard = ({navigation}: any) => {
   const [accountSummaryList, setAccountSummaryList] = useState<
     AccountDataInfo[]
   >([]);
+  const [allTransactions, setAllTransactions] = useState<KeywordData[]>([]);
 
   useEffect(() => {
     const initData = async () => {
       const res = await SmsModule.getFinanceSms();
-      setAccountSummaryList(res);
+      setAccountSummaryList(res.accountSummary);
+      setAllTransactions(res.allTransactions);
     };
     initData();
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <AllAccountsCarousel accountSummaryList={accountSummaryList} />
-      <Surface style={styles.transactionContainer}>
-        <Text variant="headlineLarge">{'Recent Transaction'}</Text>
-        <Text variant="bodySmall">{'See All'}</Text>
-      </Surface>
-      <TransactionItem
-        extractedData={accountSummaryList?.[0]?.list?.[0]?.extractedData ?? {}}
-      />
-      {/* <FlashList
-        data={accountSummaryList}
-        keyExtractor={item => item.account || ''}
-        renderItem={({item}) => (
-          <SummaryItem
-            {...item}
+      <Surface elevation={4}>
+        <AllAccountsCarousel accountSummaryList={accountSummaryList} />
+        <Surface style={styles.transactionContainer}>
+          <Text variant="headlineLarge">{'Recent Transaction'}</Text>
+          <Button
+            mode="text"
             onPress={() => {
-              console.log('Dashboard -> onPress');
-              navigation.navigate('AccountTransactions', item);
-            }}
-          />
-        )}
-        estimatedItemSize={10}
-      /> */}
+              navigation.navigate('AccountTransactions', {
+                list: allTransactions,
+              });
+            }}>
+            {'See All'}
+          </Button>
+        </Surface>
+        <FlatList
+          style={styles.list}
+          data={allTransactions.slice(0, 20)}
+          keyExtractor={item => item.rawSms.date}
+          renderItem={({item}) => <TransactionItem {...item} />}
+        />
+      </Surface>
     </SafeAreaView>
   );
 };
@@ -54,11 +53,14 @@ export const Dashboard = ({navigation}: any) => {
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    // paddingHorizontal: 8,
   },
   transactionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 8,
+  },
+  list: {
+    paddingBottom: 64,
   },
 });

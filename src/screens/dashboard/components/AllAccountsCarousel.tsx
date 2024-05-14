@@ -28,7 +28,6 @@ export const AllAccountsCarousel = ({
         <AccountCard
           {...item}
           onPress={() => {
-            console.log('Dashboard -> onPress');
             // @ts-ignore
             navigation.navigate('AccountTransactions', item);
           }}

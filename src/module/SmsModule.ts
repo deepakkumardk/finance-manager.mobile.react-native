@@ -1,8 +1,7 @@
 import {NativeModules} from 'react-native';
 import {default as smsSenders} from './smsSenders.json';
-import {financeFeatureExtractor, getTransformedSmsList} from './transformer';
+import {financeFeatureExtractor} from './transformer';
 import {orderByAccount} from './finance';
-import {default as dataDD} from './dataDD.json';
 import {SMSData} from './SMSData';
 import {DateUtils} from 'src/module/DateUtils';
 import {KeywordData} from 'src/types';
@@ -68,7 +67,7 @@ export const SmsModule = {
     // const transformedList = getTransformedSmsList(smsList);
     // const orderedList = orderByAccount(transformedList);
     const orderedList = orderByAccount(bankWiseSmsData);
-    console.log('getFinanceSms: -> orderedList', orderedList);
+    // console.log('getFinanceSms: -> orderedList', orderedList);
 
     return orderedList;
   },

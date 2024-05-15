@@ -7,6 +7,7 @@ import {KeywordData} from 'src/types';
 import {TransactionItem} from 'src/components';
 
 export const AccountTransactions = ({navigation, route}: any) => {
+  console.log('AccountTransactions -> navigation', navigation);
   const [transactionsList, _] = useState<KeywordData[]>(
     route.params.list.filter(
       (item: any) =>

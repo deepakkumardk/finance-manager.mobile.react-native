@@ -25,9 +25,19 @@ export const Dashboard = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Surface elevation={4}>
-        <AllAccountsCarousel accountSummaryList={accountSummaryList} />
-        <Surface style={styles.transactionContainer}>
+      <Surface mode={'flat'} elevation={4}>
+        <AllAccountsCarousel
+          accountSummaryList={accountSummaryList}
+          onPress={(item, index) => {
+            console.log('Dashboard -> index', index);
+            const newItem = {...item};
+            if (item.bankName === 'All Accounts') {
+              newItem.list = allTransactions;
+            }
+            navigation.navigate('AccountTransactions', newItem);
+          }}
+        />
+        <Surface mode={'flat'} style={styles.transactionContainer}>
           <Text variant="headlineLarge">{'Recent Transaction'}</Text>
           <Button
             mode="text"
@@ -41,7 +51,9 @@ export const Dashboard = ({navigation}: any) => {
         </Surface>
         <FlatList
           style={styles.list}
-          data={allTransactions.slice(0, 20)}
+          data={allTransactions
+            .filter(item => item.extractedData.type != 'Balance')
+            .slice(0, 20)}
           keyExtractor={item => item.rawSms.date}
           renderItem={({item}) => <TransactionItem {...item} />}
         />
@@ -58,7 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 8,
+    padding: 12,
   },
   list: {
     paddingBottom: 64,

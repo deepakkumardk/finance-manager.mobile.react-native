@@ -6,16 +6,16 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {AccountDataInfo} from 'src/types';
 import AccountCard from './AccountCard';
 import {Text} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 
 export const AllAccountsCarousel = ({
   accountSummaryList,
+  onPress,
 }: {
   accountSummaryList: AccountDataInfo[];
+  onPress: (item: AccountDataInfo, index: number) => void;
 }) => {
-  const navigation = useNavigation();
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const ref = useRef<any>();
 
@@ -23,19 +23,12 @@ export const AllAccountsCarousel = ({
     <Carousel
       ref={ref}
       data={accountSummaryList}
-      //   keyExtractor={item => item.account + ''}
-      renderItem={({item}) => (
-        <AccountCard
-          {...item}
-          onPress={() => {
-            // @ts-ignore
-            navigation.navigate('AccountTransactions', item);
-          }}
-        />
+      slideStyle={{marginTop: 12, marginBottom: 32}}
+      renderItem={({item, index}) => (
+        <AccountCard {...item} onPress={() => onPress(item, index)} />
       )}
       itemWidth={width}
       sliderWidth={width}
-      //   sliderHeight={width}
       loop={true}
       firstItem={0}
       containerCustomStyle={styles.container}

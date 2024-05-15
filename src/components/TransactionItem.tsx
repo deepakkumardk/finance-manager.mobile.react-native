@@ -1,10 +1,12 @@
 import React, {memo} from 'react';
-import {Icon, Surface, Text, useTheme} from 'react-native-paper';
+import {Icon, Surface, Text} from 'react-native-paper';
 import {KeywordData} from '../types';
 import {StyleSheet} from 'react-native';
+import {useAppTheme} from 'src/theme';
+import {APP_STRINGS} from 'src/constants';
 
 const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
-  const {colors} = useTheme();
+  const {colors} = useAppTheme();
   const debitCreditText =
     extractedData.type === 'Credit'
       ? '+'
@@ -13,11 +15,11 @@ const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
       : '';
 
   return (
-    <Surface style={styles.container}>
-      <Surface>
+    <Surface mode={'flat'} style={styles.container}>
+      <Surface mode={'flat'}>
         <Icon source="home" size={24} />
       </Surface>
-      <Surface style={styles.leftDetails}>
+      <Surface mode={'flat'} style={styles.leftDetails}>
         <Text>{extractedData.senderUpi || 'Sender'}</Text>
         <Text>
           {'UserTag - '}
@@ -25,15 +27,15 @@ const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
         </Text>
         {/* <Text>{rawSms?.body}</Text> */}
       </Surface>
-      <Surface>
+      <Surface mode={'flat'}>
         <Text
           style={[
             {
-              color: debitCreditText === '+' ? colors.primary : colors.error,
+              color: debitCreditText === '+' ? colors.success : colors.error,
             },
             styles.debitCreditText,
           ]}>
-          {debitCreditText + extractedData?.amount}
+          {debitCreditText + APP_STRINGS.RS + extractedData?.amount}
         </Text>
       </Surface>
     </Surface>

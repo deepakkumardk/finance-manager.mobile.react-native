@@ -1,54 +1,79 @@
-import React, {memo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import React, {memo, useRef} from 'react';
+import {StyleSheet} from 'react-native';
 
-import {Divider, Surface, Text} from 'react-native-paper';
+import {
+  Divider,
+  Icon,
+  Surface,
+  Text,
+  TouchableRipple,
+} from 'react-native-paper';
+import {formatNumber} from 'src/module/finance';
 import {AccountDataInfo} from 'src/types';
-
-const RS = '₹';
+import {useAppTheme} from 'src/theme';
+import {APP_STRINGS} from 'src/constants';
 
 const AccountCard = ({
   account,
   bankName,
   availableBalance,
-  availableBalanceDisplay,
-  lastReportedBalanceDisplay,
+  currentMonthIn,
+  currentMonthExpense,
+  lastReportedBalance,
   onPress,
 }: AccountDataInfo & {
   onPress: () => void;
-}) => (
-  <Surface style={styles.container}>
-    <TouchableOpacity style={styles.innerContainer} onPress={onPress}>
-      <Surface style={styles.firstHalf}>
-        <Text variant="labelMedium">{bankName}</Text>
-        <Text variant="labelMedium">{account}</Text>
-        <Text variant="labelMedium">{'Available Balance'}</Text>
-        <Text variant="headlineLarge">
-          {RS}
-          {availableBalance && availableBalance > 0
-            ? availableBalanceDisplay
-            : lastReportedBalanceDisplay}
-        </Text>
-        <Text variant="labelSmall">
-          {'as of '}
-          {'Date'}
-        </Text>
-      </Surface>
-      <Surface style={styles.secondHalf}>
-        <Text>{'in'}</Text>
-        <Text>
-          {RS}
-          {'123'}
-        </Text>
-        <Divider style={styles.divider} />
-        <Text>{'out'}</Text>
-        <Text>
-          {RS}
-          {'123'}
-        </Text>
-      </Surface>
-    </TouchableOpacity>
-  </Surface>
-);
+}) => {
+  const {colors} = useAppTheme();
+  const bgStyle = useRef({}).current;
+
+  return (
+    <Surface mode={'flat'} style={[styles.container, bgStyle]}>
+      <TouchableRipple onPress={onPress}>
+        <Surface mode={'flat'} style={styles.innerContainer}>
+          <Surface mode={'flat'} style={[styles.firstHalf, bgStyle]}>
+            <Text variant="labelMedium">{bankName}</Text>
+            <Text variant="labelMedium">{account}</Text>
+            <Text variant="labelMedium">{'Available Balance'}</Text>
+            <Text variant="headlineLarge">
+              {APP_STRINGS.RS}
+              {formatNumber(
+                availableBalance && availableBalance > 0
+                  ? availableBalance
+                  : lastReportedBalance,
+              )}
+            </Text>
+            <Text variant="labelSmall">
+              {'as of '}
+              {'Date'}
+            </Text>
+          </Surface>
+          <Surface
+            mode={'flat'}
+            style={[styles.secondHalf, {backgroundColor: colors.secondary}]}>
+            <Text style={{color: colors.success}}>
+              <Icon source={'trending-up'} size={16} color={colors.success} />
+              {' in'}
+            </Text>
+            <Text style={{color: colors.shadow}}>
+              {APP_STRINGS.RS}
+              {formatNumber(currentMonthIn)}
+            </Text>
+            <Divider style={styles.divider} />
+            <Text style={{color: colors.error}}>
+              <Icon source={'trending-down'} size={16} color={colors.error} />
+              {' out'}
+            </Text>
+            <Text style={{color: colors.shadow}}>
+              {APP_STRINGS.RS}
+              {formatNumber(currentMonthExpense)}
+            </Text>
+          </Surface>
+        </Surface>
+      </TouchableRipple>
+    </Surface>
+  );
+};
 
 export default memo(AccountCard);
 
@@ -65,7 +90,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingBottom: 12,
     paddingHorizontal: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -78,7 +103,6 @@ const styles = StyleSheet.create({
   secondHalf: {
     flex: 0.25,
     justifyContent: 'center',
-    backgroundColor: 'green',
     borderRadius: 16,
     paddingVertical: 10,
     paddingHorizontal: 8,

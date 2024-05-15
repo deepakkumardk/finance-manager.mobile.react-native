@@ -1,4 +1,9 @@
+import {DateUtils} from 'src/module/DateUtils';
 import {AccountDataInfo, BankDataInfo, KeywordData} from '../types';
+
+export const formatNumber = (num: any) => {
+  return parseInt(num).toLocaleString();
+};
 
 export function orderByAccount(bankWiseSmsData: BankDataInfo) {
   const accountWiseSmsData: {
@@ -46,15 +51,21 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
           accountData = {
             list: [],
             bankName: '',
+            account: formattedAccount,
             fullBankName: bankDataItem.fullBankName,
             availableBalance: 0,
             lastReportedBalance: 0,
-            account: formattedAccount,
+            currentMonthIn: 0,
+            currentMonthExpense: 0,
           };
         }
         if (!accountData.bankName) {
           accountData.bankName = item.extractedData.bankName;
         }
+
+        const isCurrentMonth = DateUtils.isInCurrentMonthAndYear(
+          item.rawSms.date,
+        );
 
         // Start of calculate availableBalance
         if (
@@ -66,9 +77,21 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
         } else if (item.extractedData.type === 'Debit') {
           // @ts-ignore
           accountData.availableBalance -= Number(item.extractedData.amount);
+
+          if (isCurrentMonth) {
+            // @ts-ignore
+            accountData.currentMonthExpense += Number(
+              item.extractedData.amount,
+            );
+          }
         } else if (item.extractedData.type === 'Credit') {
           // @ts-ignore
           accountData.availableBalance += Number(item.extractedData.amount);
+
+          if (isCurrentMonth) {
+            // @ts-ignore
+            accountData.currentMonthIn += Number(item.extractedData.amount);
+          }
         }
         // End of calculate availableBalance
 
@@ -80,12 +103,20 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
 
   let allTransactions: KeywordData[] = [];
 
+  let allAccountBalance = 0;
+  let allAccountCurrentMonthIn = 0;
+  let allAccountCurrentMonthExpense = 0;
+
   const accountSummary = Object.entries(accountWiseSmsData).map(
     ([_, accountData]) => {
-      // @ts-ignore
-      let availableBalance = parseInt(accountData.availableBalance);
-      // @ts-ignore
-      let lastReportedBalance = parseInt(accountData.lastReportedBalance);
+      allAccountBalance +=
+        // @ts-ignore
+        accountData.availableBalance > 0
+          ? accountData.availableBalance
+          : accountData.lastReportedBalance;
+
+      allAccountCurrentMonthIn += accountData.currentMonthIn || 0;
+      allAccountCurrentMonthExpense += accountData.currentMonthExpense || 0;
 
       const sortedList = accountData.list?.sort((a, b) => {
         const date1 = a.rawSms.date;
@@ -101,15 +132,21 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
       allTransactions = allTransactions.concat(sortedList);
 
       return {
-        availableBalanceDisplay: availableBalance?.toLocaleString(),
-        lastReportedBalanceDisplay: lastReportedBalance?.toLocaleString(),
         ...accountData,
         list: sortedList,
       };
     },
   );
 
-  // console.log('orderByAccount -> accountSummary', accountSummary);
-  console.log('orderByAccount -> allTransactions', allTransactions.length);
+  // Insert the All Accounts at first index
+  accountSummary.splice(0, 0, {
+    list: [],
+    availableBalance: allAccountBalance,
+    bankName: 'All Accounts',
+    fullBankName: 'All Accounts',
+    currentMonthIn: allAccountCurrentMonthIn,
+    currentMonthExpense: allAccountCurrentMonthExpense,
+  });
+
   return {accountSummary, allTransactions};
 }

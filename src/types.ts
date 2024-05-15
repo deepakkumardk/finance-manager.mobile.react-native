@@ -11,8 +11,8 @@ export type AccountDataInfo = {
   list: KeywordData[];
   availableBalance?: number;
   lastReportedBalance?: number;
-  availableBalanceDisplay?: string;
-  lastReportedBalanceDisplay?: string;
+  currentMonthIn?: number;
+  currentMonthExpense?: number;
 };
 
 export type KeywordData = {

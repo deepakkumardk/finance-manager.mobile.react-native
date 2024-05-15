@@ -1,11 +1,8 @@
+import {DateUtils} from './DateUtils';
 import {FinanceDataProps, type KeywordData} from '../types';
 import {SMSData} from './SMSData';
 import {tags} from './tags';
-
-const keys = [];
-Object.keys(tags).forEach(key => {
-  keys.push(key);
-});
+import {default as smsSenders} from './smsSenders.json';
 
 export const financeFeatureExtractor = (text: string) => {
   const findFirstMatch = (regex: RegExp) => {
@@ -100,53 +97,46 @@ export const financeFeatureExtractor = (text: string) => {
   } as FinanceDataProps;
 };
 
-export const getTransformedSmsList = (smsList: SMSData[]) => {
-  smsList.forEach(item => {
-    const body = item.body;
-
-    let isKeywordMatchFound = false;
-    let obj = {} as KeywordData;
-
-    for (const key in tags) {
-      const taggedItem = tags[key];
-      const {data = [], keywords} = taggedItem;
-      for (const keyword of keywords) {
-        obj = {
-          rawSms: item,
-          text_debug: item.body,
-          extractedData: financeFeatureExtractor(body),
-        };
-
-        if (
-          keyword &&
-          typeof keyword === 'string' &&
-          body.toLowerCase().includes(keyword.toLowerCase())
-        ) {
-          taggedItem.data = [...data, obj];
-          isKeywordMatchFound = true;
-          break;
-        }
-        // else if (keyword instanceof RegExp) {
-        //   const regExp = keyword[0];
-        //   if (body.match(regExp)) {
-        //     taggedItem.data = [...data, obj];
-        //     isFound = true;
-        //     break;
-        //   }
-        // }
-        else {
-          isKeywordMatchFound = false;
-        }
+export const getTransformedSmsList = (
+  smsList: SMSData[],
+  sendersCodeList: string[],
+) => {
+  const bankWiseSmsData: any = {};
+  smsList
+    .map(item => {
+      let newAddress = item.address;
+      if (item.address.includes('-')) {
+        newAddress = item.address.split('-')?.[1];
       }
-      if (isKeywordMatchFound) {
-        break;
-      }
-    }
+      return {
+        ...item,
+        address: newAddress,
+      };
+    })
+    .filter((item: any) => sendersCodeList.includes(item.address))
+    .map(item => ({
+      ...item,
+      // @ts-ignore
+      fullBankName: smsSenders[item.address],
+      // @ts-ignore
+      date_display: DateUtils.format(item.date, 'd LLL, HH:mm'),
+    }))
+    .forEach(sms => {
+      const extractedData = financeFeatureExtractor(sms.body);
+      const obj =
+        extractedData?.type &&
+        ({
+          date_debug: DateUtils.format(sms.date),
+          text_debug: sms.body,
+          rawSms: sms,
+          extractedData,
+        } as KeywordData);
+      const prevList = bankWiseSmsData[sms.fullBankName]?.list ?? [];
+      bankWiseSmsData[sms.fullBankName] = {
+        fullBankName: sms.fullBankName,
+        list: obj ? [...prevList, obj] : prevList,
+      };
+    });
 
-    if (!isKeywordMatchFound) {
-      tags.Others.data = [...tags.Others.data, obj];
-    }
-  });
-
-  return tags;
+  return bankWiseSmsData;
 };

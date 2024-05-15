@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {Surface, Text} from 'react-native-paper';
 import {AccountDataInfo} from 'src/types';
@@ -12,7 +12,7 @@ const SummaryItem = ({
 }: AccountDataInfo & {
   onPress: () => void;
 }) => (
-  <Surface style={styles.container}>
+  <Surface mode={'flat'} style={styles.container}>
     <TouchableOpacity
       onPress={() => {
         onPress();

@@ -15,14 +15,21 @@ import {
   adaptNavigationTheme,
 } from 'react-native-paper';
 import merge from 'deepmerge';
+import {AppDarkTheme, AppLightTheme} from 'src/theme';
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
   reactNavigationDark: NavigationDarkTheme,
 });
 
-const CombinedDefaultTheme = merge(MD3LightTheme, LightTheme);
-const CombinedDarkTheme = merge(MD3DarkTheme, DarkTheme);
+const CombinedDefaultTheme = merge(
+  {...MD3LightTheme, colors: AppLightTheme.colors},
+  LightTheme,
+);
+const CombinedDarkTheme = merge(
+  {...MD3DarkTheme, colors: AppDarkTheme.colors},
+  DarkTheme,
+);
 
 function App(): React.ReactNode {
   const isDarkMode = useColorScheme() === 'dark';

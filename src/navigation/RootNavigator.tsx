@@ -3,7 +3,6 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Dashboard} from '../screens/dashboard';
 import {AccountTransactions} from '../screens/accountTransactions';
-import {useTheme} from 'react-native-paper';
 import {Stats} from 'src/screens/stats';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import {Settings} from 'src/screens/settings';
@@ -14,8 +13,6 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const getTabIcon = ({focused, size, name, color}: any) => {
-  const {colors} = useTheme();
-
   return (
     <IonIcons
       name={focused ? name : name + '-outline'}

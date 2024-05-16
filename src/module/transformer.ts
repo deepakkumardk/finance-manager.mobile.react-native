@@ -119,7 +119,7 @@ export const getTransformedSmsList = (
       // @ts-ignore
       fullBankName: smsSenders[item.address],
       // @ts-ignore
-      date_display: DateUtils.format(item.date, 'd LLL, HH:mm'),
+      date_display: DateUtils.format(item.date),
     }))
     .forEach(sms => {
       const extractedData = financeFeatureExtractor(sms.body);

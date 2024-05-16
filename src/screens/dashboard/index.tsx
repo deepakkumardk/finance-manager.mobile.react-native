@@ -7,6 +7,8 @@ import {AccountDataInfo, KeywordData} from '../../types';
 import {AllAccountsCarousel} from './components/AllAccountsCarousel';
 import {Button, Surface, Text} from 'react-native-paper';
 import {TransactionItem} from 'src/components';
+import {APP_STRINGS} from 'src/constants';
+import {PermissionUtils} from 'src/utils';
 
 export const Dashboard = ({navigation}: any) => {
   const [accountSummaryList, setAccountSummaryList] = useState<
@@ -14,8 +16,26 @@ export const Dashboard = ({navigation}: any) => {
   >([]);
   const [allTransactions, setAllTransactions] = useState<KeywordData[]>([]);
 
+  const navigateToTransactions = (item?: AccountDataInfo) => {
+    let newItem = {...item};
+    if (!item) {
+      const summaryItem = accountSummaryList.find(
+        summary => summary.bankName === APP_STRINGS.ALL_ACCOUNTS,
+      );
+      newItem = {...summaryItem};
+    }
+    if (newItem?.bankName === APP_STRINGS.ALL_ACCOUNTS) {
+      newItem.list = allTransactions;
+    }
+    navigation.navigate('AccountTransactions', newItem);
+  };
+
   useEffect(() => {
     const initData = async () => {
+      const isGranted = await PermissionUtils.requestPermission();
+      if (!isGranted) {
+        return;
+      }
       const res = await SmsModule.getFinanceSms();
       setAccountSummaryList(res.accountSummary);
       setAllTransactions(res.allTransactions);
@@ -28,13 +48,8 @@ export const Dashboard = ({navigation}: any) => {
       <Surface mode={'flat'} elevation={4}>
         <AllAccountsCarousel
           accountSummaryList={accountSummaryList}
-          onPress={(item, index) => {
-            console.log('Dashboard -> index', index);
-            const newItem = {...item};
-            if (item.bankName === 'All Accounts') {
-              newItem.list = allTransactions;
-            }
-            navigation.navigate('AccountTransactions', newItem);
+          onPress={item => {
+            navigateToTransactions(item);
           }}
         />
         <Surface mode={'flat'} style={styles.transactionContainer}>
@@ -42,9 +57,7 @@ export const Dashboard = ({navigation}: any) => {
           <Button
             mode="text"
             onPress={() => {
-              navigation.navigate('AccountTransactions', {
-                list: allTransactions,
-              });
+              navigateToTransactions();
             }}>
             {'See All'}
           </Button>
@@ -52,7 +65,7 @@ export const Dashboard = ({navigation}: any) => {
         <FlatList
           style={styles.list}
           data={allTransactions
-            .filter(item => item.extractedData.type != 'Balance')
+            .filter(item => item.extractedData.type !== 'Balance')
             .slice(0, 20)}
           keyExtractor={item => item.rawSms.date}
           renderItem={({item}) => <TransactionItem {...item} />}

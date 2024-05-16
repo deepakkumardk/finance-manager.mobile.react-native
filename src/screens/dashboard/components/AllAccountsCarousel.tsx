@@ -23,7 +23,7 @@ export const AllAccountsCarousel = ({
     <Carousel
       ref={ref}
       data={accountSummaryList}
-      slideStyle={{marginTop: 12, marginBottom: 32}}
+      slideStyle={styles.slide}
       renderItem={({item, index}) => (
         <AccountCard {...item} onPress={() => onPress(item, index)} />
       )}
@@ -46,19 +46,18 @@ export const AllAccountsCarousel = ({
         containerStyle={styles.container}
         inactiveDotStyle={styles.inactiveDotStyle}
       />
-      <Text>SLKDJf</Text>
     </Carousel>
   );
 };
 
 const styles = StyleSheet.create({
+  slide: {
+    marginBottom: 24,
+  },
   contentContainer: {
     marginBottom: 1,
-    // paddingVertical: 10,
   },
   container: {
-    // backgroundColor: 'red',
-    // paddingVertical: 41,
     overflow: 'visible',
   },
   paginationContainer: {

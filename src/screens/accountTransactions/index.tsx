@@ -5,6 +5,7 @@ import {FlashList} from '@shopify/flash-list';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {KeywordData} from 'src/types';
 import {TransactionItem} from 'src/components';
+import AccountCard from 'src/screens/dashboard/components/AccountCard';
 
 export const AccountTransactions = ({navigation, route}: any) => {
   console.log('AccountTransactions -> navigation', navigation);
@@ -22,6 +23,8 @@ export const AccountTransactions = ({navigation, route}: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <AccountCard {...route.params} onPress={() => {}} />
+
       <FlashList
         data={transactionsList}
         keyExtractor={item => item.rawSms.date}

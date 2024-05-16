@@ -1,8 +1,7 @@
 import {DateTime} from 'luxon';
 
 export const DateUtils = {
-  // @ts-ignore
-  format: (millis: any, format: string = DateTime.DATETIME_MED) => {
+  format: (millis: any, format: string = 'd LLL, HH:mm') => {
     const dt = DateTime.fromMillis(parseInt(millis));
     return dt.toFormat(format);
   },

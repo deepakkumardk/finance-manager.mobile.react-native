@@ -8,7 +8,7 @@ import {
   Text,
   TouchableRipple,
 } from 'react-native-paper';
-import {formatNumber} from 'src/module/finance';
+import {NumberUtils} from 'src/utils';
 import {AccountDataInfo} from 'src/types';
 import {useAppTheme} from 'src/theme';
 import {APP_STRINGS} from 'src/constants';
@@ -20,6 +20,7 @@ const AccountCard = ({
   currentMonthIn,
   currentMonthExpense,
   lastReportedBalance,
+  reportedDateDisplay,
   onPress,
 }: AccountDataInfo & {
   onPress: () => void;
@@ -37,7 +38,7 @@ const AccountCard = ({
             <Text variant="labelMedium">{'Available Balance'}</Text>
             <Text variant="headlineLarge">
               {APP_STRINGS.RS}
-              {formatNumber(
+              {NumberUtils.formatNumber(
                 availableBalance && availableBalance > 0
                   ? availableBalance
                   : lastReportedBalance,
@@ -45,7 +46,7 @@ const AccountCard = ({
             </Text>
             <Text variant="labelSmall">
               {'as of '}
-              {'Date'}
+              {reportedDateDisplay}
             </Text>
           </Surface>
           <Surface
@@ -57,7 +58,7 @@ const AccountCard = ({
             </Text>
             <Text style={{color: colors.shadow}}>
               {APP_STRINGS.RS}
-              {formatNumber(currentMonthIn)}
+              {NumberUtils.formatNumber(currentMonthIn)}
             </Text>
             <Divider style={styles.divider} />
             <Text style={{color: colors.error}}>
@@ -66,7 +67,7 @@ const AccountCard = ({
             </Text>
             <Text style={{color: colors.shadow}}>
               {APP_STRINGS.RS}
-              {formatNumber(currentMonthExpense)}
+              {NumberUtils.formatNumber(currentMonthExpense)}
             </Text>
           </Surface>
         </Surface>
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginHorizontal: 16,
     borderRadius: 16,
+    marginVertical: 16,
   },
   innerContainer: {
     alignItems: 'center',
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 12,
+    paddingVertical: 12,
   },
   firstHalf: {
     flex: 0.75,

@@ -5,14 +5,15 @@ export type BankDataInfo = {
 };
 
 export type AccountDataInfo = {
-  account?: string;
-  bankName?: string;
-  fullBankName?: string;
+  account: string;
+  bankName: string;
+  fullBankName: string;
   list: KeywordData[];
-  availableBalance?: number;
-  lastReportedBalance?: number;
-  currentMonthIn?: number;
-  currentMonthExpense?: number;
+  availableBalance: number;
+  lastReportedBalance: number;
+  currentMonthIn: number;
+  currentMonthExpense: number;
+  reportedDateDisplay: string;
 };
 
 export type KeywordData = {

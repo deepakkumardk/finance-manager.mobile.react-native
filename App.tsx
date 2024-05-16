@@ -36,7 +36,11 @@ function App(): React.ReactNode {
   const theme = isDarkMode ? CombinedDarkTheme : CombinedDefaultTheme;
 
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider
+      theme={theme}
+      settings={{
+        rippleEffectEnabled: true,
+      }}>
       <NavigationContainer theme={theme}>
         <RootNavigator />
       </NavigationContainer>

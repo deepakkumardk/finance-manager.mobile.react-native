@@ -69,14 +69,7 @@ const getAccountWiseSmsData = (bankWiseSmsData: BankDataInfo) => {
         );
 
         // Start of calculate availableBalance
-        if (
-          item.extractedData.availableBalance ||
-          item.extractedData.type === 'Balance'
-        ) {
-          accountData.availableBalance = accountData.lastReportedBalance =
-            Number(item.extractedData.availableBalance);
-          accountData.reportedDateDisplay = item.rawSms.date;
-        } else if (item.extractedData.type === 'Debit') {
+        if (item.extractedData.type === 'Debit') {
           accountData.availableBalance -= Number(item.extractedData.amount);
 
           if (accountData.availableBalance > 0) {
@@ -98,6 +91,15 @@ const getAccountWiseSmsData = (bankWiseSmsData: BankDataInfo) => {
           if (isCurrentMonth) {
             accountData.currentMonthIn += Number(item.extractedData.amount);
           }
+        }
+        // Balance can also come in the debit/credit type messages
+        if (
+          item.extractedData.availableBalance ||
+          item.extractedData.type === 'Balance'
+        ) {
+          accountData.availableBalance = accountData.lastReportedBalance =
+            Number(item.extractedData.availableBalance);
+          accountData.reportedDateDisplay = item.rawSms.date;
         }
         // End of calculate availableBalance
 

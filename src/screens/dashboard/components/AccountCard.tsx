@@ -26,12 +26,12 @@ const AccountCard = ({
   onPress: () => void;
 }) => {
   const {colors} = useAppTheme();
-  const bgStyle = useRef({}).current;
+  const bgStyle = useRef(bankName === APP_STRINGS.ALL_ACCOUNTS && {}).current;
 
   return (
     <Surface mode={'flat'} style={[styles.container, bgStyle]}>
       <TouchableRipple onPress={onPress}>
-        <Surface mode={'flat'} style={styles.innerContainer}>
+        <Surface mode={'flat'} style={[styles.innerContainer, bgStyle]}>
           <Surface mode={'flat'} style={[styles.firstHalf, bgStyle]}>
             <Text variant="labelMedium">{bankName}</Text>
             <Text variant="labelMedium">{account}</Text>
@@ -91,12 +91,12 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   innerContainer: {
-    alignItems: 'center',
-    paddingBottom: 12,
-    paddingHorizontal: 4,
+    // alignItems: 'center',
+    // paddingBottom: 12,
+    marginHorizontal: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 12,
+    marginVertical: 12,
   },
   firstHalf: {
     flex: 0.75,

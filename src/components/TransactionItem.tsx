@@ -25,7 +25,7 @@ const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
           {'UserTag - '}
           {rawSms?.date_display}
         </Text>
-        {/* <Text>{rawSms?.body}</Text> */}
+        {__DEV__ ? <Text>{rawSms?.body}</Text> : null}
       </Surface>
       <Surface mode={'flat'}>
         <Text

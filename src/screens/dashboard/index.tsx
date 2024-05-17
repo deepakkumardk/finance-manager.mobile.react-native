@@ -53,7 +53,7 @@ export const Dashboard = ({navigation}: any) => {
           }}
         />
         <Surface mode={'flat'} style={styles.transactionContainer}>
-          <Text variant="headlineLarge">{'Recent Transaction'}</Text>
+          <Text variant="headlineSmall">{'Recent Transaction'}</Text>
           <Button
             mode="text"
             onPress={() => {
@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
   },
   list: {
     paddingBottom: 64,

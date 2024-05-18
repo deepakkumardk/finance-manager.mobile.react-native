@@ -2,8 +2,8 @@ import {FinanceDataProps} from '../types';
 import {tags} from './tags';
 
 export const financeFeatureExtractor = (text: string) => {
-  const findFirstMatch = (regex: RegExp) => {
-    return text.match(regex)?.[0];
+  const findFirstMatch = (regex: RegExp, matchedIndex = 0) => {
+    return text.match(regex)?.[matchedIndex];
   };
 
   // [^A-Za-z0-9\s] is to allow only special character like Rs: 45.00, Rs- 46.00
@@ -52,8 +52,14 @@ export const financeFeatureExtractor = (text: string) => {
   }
 
   //   TODO name change
-  const senderUpiRegex = /[\d\w]+\@([a-z]+)/g;
-  const senderUpi = findFirstMatch(senderUpiRegex);
+  const senderUpiRegex = /[\d\w\.]+\@([a-z]+)/g;
+  let senderUpi = findFirstMatch(senderUpiRegex);
+  // lookbehind and lookahead to just include the in-between text
+  const alternateSenderRegex =
+    /(?<=\sto\syour\s(account|a\/c))(.*?)(?=\s(Ref|on))/gi;
+  if (!senderUpi) {
+    senderUpi = findFirstMatch(alternateSenderRegex)?.trim();
+  }
 
   const accountWordRegex = /((account|a\/c|AC)(\s*no.)?)\s*/gi;
   const accountNumberRegex = /[\*|x]+\d+/gi;

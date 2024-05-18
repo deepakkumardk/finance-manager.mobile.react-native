@@ -20,12 +20,14 @@ const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
         <Icon source="home" size={24} />
       </Surface>
       <Surface mode={'flat'} style={styles.leftDetails}>
-        <Text>{extractedData.senderUpi || 'Sender'}</Text>
-        <Text>
-          {'UserTag - '}
+        <Text variant="bodyMedium">{extractedData.senderUpi || '-'}</Text>
+        <Text variant="bodySmall" style={{color: colors.onSurfaceDisabled}}>
+          {'Misc • '}
           {rawSms?.date_display}
         </Text>
-        {__DEV__ ? <Text>{rawSms?.body}</Text> : null}
+        {__DEV__ ? (
+          <Text style={{color: colors.onSurfaceDisabled}}>{rawSms?.body}</Text>
+        ) : null}
       </Surface>
       <Surface mode={'flat'}>
         <Text

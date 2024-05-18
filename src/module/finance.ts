@@ -168,18 +168,9 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
     },
   );
 
-  console.log(
-    'orderByAccount -> firstItemsList',
-    ListUtils.sortByDate(firstItemsList),
-  );
-
   allAccountSummaryData.reportedDateDisplay = DateUtils.format(
     ListUtils.sortByDate(firstItemsList)?.[0].rawSms.date,
     'd LLL',
-  );
-  console.log(
-    'orderByAccount -> allAccountSummaryData.reportedDateDisplay',
-    allAccountSummaryData.reportedDateDisplay,
   );
 
   // Insert the All Accounts at first index

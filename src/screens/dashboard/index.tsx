@@ -5,12 +5,13 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {SmsModule} from '../../module';
 import {AccountDataInfo, KeywordData} from '../../types';
 import {AllAccountsCarousel} from './components/AllAccountsCarousel';
-import {Button, Surface, Text} from 'react-native-paper';
+import {ActivityIndicator, Button, Surface, Text} from 'react-native-paper';
 import {TransactionItem} from 'src/components';
 import {APP_STRINGS} from 'src/constants';
 import {PermissionUtils} from 'src/utils';
 
 export const Dashboard = ({navigation}: any) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [accountSummaryList, setAccountSummaryList] = useState<
     AccountDataInfo[]
   >([]);
@@ -34,17 +35,27 @@ export const Dashboard = ({navigation}: any) => {
     const initData = async () => {
       const isGranted = await PermissionUtils.requestPermission();
       if (!isGranted) {
+        setIsLoading(false);
         return;
       }
       const res = await SmsModule.getFinanceSms();
       setAccountSummaryList(res.accountSummary);
       setAllTransactions(res.allTransactions);
+      setIsLoading(false);
     };
     initData();
   }, []);
 
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator />
+      </SafeAreaView>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <Surface mode={'flat'} elevation={4}>
         <AllAccountsCarousel
           accountSummaryList={accountSummaryList}
@@ -63,7 +74,7 @@ export const Dashboard = ({navigation}: any) => {
           </Button>
         </Surface>
         <FlatList
-          style={styles.list}
+          contentContainerStyle={styles.list}
           data={allTransactions
             .filter(item => item.extractedData.type !== 'Balance')
             .slice(0, 20)}
@@ -77,7 +88,10 @@ export const Dashboard = ({navigation}: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
+    elevation: 1,
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
   transactionContainer: {
     flexDirection: 'row',
@@ -87,6 +101,6 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   list: {
-    paddingBottom: 64,
+    paddingBottom: 500,
   },
 });

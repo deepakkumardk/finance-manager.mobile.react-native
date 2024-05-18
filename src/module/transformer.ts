@@ -23,7 +23,9 @@ export const getTransformedSmsList = (
     .filter(
       (item: any) => sendersCodeList.includes(item.address),
       // DEV conditions to debug only
-      //  (__DEV__ && item.address.includes('IDFC')),
+      // __DEV__ &&
+      // // @ts-ignore
+      // smsSenders[item.address].includes('Kotak'),
     )
     .map(item => ({
       ...item,

@@ -5,7 +5,6 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 
 import {AccountDataInfo} from 'src/types';
 import AccountCard from './AccountCard';
-import {Text} from 'react-native-paper';
 
 const {width} = Dimensions.get('window');
 

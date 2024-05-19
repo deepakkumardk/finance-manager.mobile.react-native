@@ -31,7 +31,6 @@ export const getTransformedSmsList = (
       ...item,
       // @ts-ignore
       fullBankName: smsSenders[item.address],
-      // @ts-ignore
       date_display: DateUtils.format(item.date),
     }))
     .forEach(sms => {

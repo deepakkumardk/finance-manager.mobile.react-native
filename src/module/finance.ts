@@ -1,5 +1,5 @@
 import {DateUtils} from 'src/module';
-import {APP_STRINGS} from 'src/constants';
+import {APP_STRINGS, AppSingletons} from 'src/constants';
 
 import {AccountDataInfo, BankDataInfo, KeywordData} from '../types';
 import {ListUtils} from 'src/utils';
@@ -158,8 +158,12 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
         return 0;
       });
       allTransactions = allTransactions.concat(sortedList);
-
       firstItemsList.push(sortedList?.[0]);
+
+      AppSingletons.accounts.push({
+        account: accountData.account,
+        bankName: accountData.bankName,
+      });
 
       return {
         ...accountData,

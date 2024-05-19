@@ -4,6 +4,7 @@ import {KeywordData} from '../types';
 import {StyleSheet} from 'react-native';
 import {useAppTheme} from 'src/theme';
 import {APP_STRINGS} from 'src/constants';
+import {SmsHelper} from 'src/module';
 
 const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
   const {colors} = useAppTheme();
@@ -20,7 +21,11 @@ const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
         <Icon source="home" size={24} />
       </Surface>
       <Surface mode={'flat'} style={styles.leftDetails}>
-        <Text variant="bodyMedium">{extractedData.senderUpi || '-'}</Text>
+        <Text variant="bodyMedium">
+          {extractedData.type === 'Credit'
+            ? ''
+            : SmsHelper.formatSenderName(extractedData.senderUpi) || '-'}
+        </Text>
         <Text variant="bodySmall" style={{color: colors.onSurfaceDisabled}}>
           {'Misc • '}
           {rawSms?.date_display}

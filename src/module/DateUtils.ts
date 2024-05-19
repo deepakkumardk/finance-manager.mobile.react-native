@@ -2,8 +2,14 @@ import {DateTime} from 'luxon';
 
 export const DateUtils = {
   format: (millis: any, format: string = 'd LLL, HH:mm') => {
-    const dt = DateTime.fromMillis(parseInt(millis));
-    return dt.toFormat(format);
+    const inputDate = DateTime.fromMillis(parseInt(millis));
+    const currentYear = DateTime.now().year;
+
+    if (inputDate.year === currentYear) {
+      return inputDate.toFormat(format);
+    } else {
+      return inputDate.toFormat('d LLL yyyy');
+    }
   },
 
   isInCurrentMonthAndYear: (millis: any) => {

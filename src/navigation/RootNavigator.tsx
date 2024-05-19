@@ -84,6 +84,10 @@ export const RootNavigator = ({}: any) => (
         headerShown: false,
       }}
     />
-    <Stack.Screen name="AccountTransactions" component={AccountTransactions} />
+    <Stack.Screen
+      name="AccountTransactions"
+      component={AccountTransactions}
+      options={{headerShown: false}}
+    />
   </Stack.Navigator>
 );

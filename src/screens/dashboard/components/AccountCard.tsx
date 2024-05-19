@@ -25,7 +25,7 @@ const AccountCard = ({
 }: AccountDataInfo & {
   onPress: () => void;
 }) => {
-  const {colors} = useAppTheme();
+  const {colors, dark} = useAppTheme();
   const bgStyle = useRef(bankName === APP_STRINGS.ALL_ACCOUNTS && {}).current;
 
   return (
@@ -51,9 +51,20 @@ const AccountCard = ({
           </Surface>
           <Surface
             mode={'flat'}
-            style={[styles.secondHalf, {backgroundColor: colors.secondary}]}>
-            <Text style={{color: colors.success}}>
-              <Icon source={'trending-up'} size={16} color={colors.success} />
+            style={[
+              styles.secondHalf,
+              {
+                backgroundColor: dark
+                  ? colors.onSecondaryContainer
+                  : colors.secondaryContainer,
+              },
+            ]}>
+            <Text style={{color: colors.successContainer}}>
+              <Icon
+                source={'trending-up'}
+                size={16}
+                color={colors.successContainer}
+              />
               {' in'}
             </Text>
             <Text style={{color: colors.shadow}}>
@@ -61,8 +72,12 @@ const AccountCard = ({
               {NumberUtils.formatNumber(currentMonthIn)}
             </Text>
             <Divider style={styles.divider} />
-            <Text style={{color: colors.error}}>
-              <Icon source={'trending-down'} size={16} color={colors.error} />
+            <Text style={{color: colors.errorContainer}}>
+              <Icon
+                source={'trending-down'}
+                size={16}
+                color={colors.errorContainer}
+              />
               {' out'}
             </Text>
             <Text style={{color: colors.shadow}}>

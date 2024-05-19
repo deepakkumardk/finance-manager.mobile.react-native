@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet} from 'react-native';
 
 import {FlashList} from '@shopify/flash-list';
@@ -7,6 +7,7 @@ import {KeywordData} from 'src/types';
 import {TransactionItem} from 'src/components';
 import AccountCard from 'src/screens/dashboard/components/AccountCard';
 import {Chip, Surface} from 'react-native-paper';
+import {HeaderWithSearch} from './components/HeaderWithSearch';
 
 const types = ['All', 'Credit', 'Debit'];
 
@@ -43,12 +44,31 @@ export const AccountTransactions = ({navigation, route}: any) => {
     [route.params],
   );
 
-  useEffect(() => {
-    //
-  }, []);
+  const onQueryChange = useCallback(
+    (query: string) => {
+      if (query) {
+        setTransactionsList(
+          route.params.list.filter(
+            (item: KeywordData) =>
+              (item.extractedData.type === 'Debit' ||
+                item.extractedData.type === 'Credit') &&
+              item.extractedData.senderUpi
+                ?.toLowerCase()
+                ?.includes(query.toLowerCase()),
+          ),
+        );
+        return;
+      }
+    },
+    [route.params],
+  );
 
   return (
     <SafeAreaView style={styles.container}>
+      <HeaderWithSearch
+        onQueryChange={onQueryChange}
+        onSearchHide={() => onChipPress(selectedType)}
+      />
       <AccountCard {...route.params} onPress={() => {}} />
       <Surface style={styles.row}>
         {types.map(type => (
@@ -73,6 +93,12 @@ export const AccountTransactions = ({navigation, route}: any) => {
 };
 
 const styles = StyleSheet.create({
+  headerIcon: {
+    paddingHorizontal: 12,
+  },
+  searchContainer: {
+    alignSelf: 'center',
+  },
   container: {
     flex: 1,
   },

@@ -5,6 +5,7 @@ import {StyleSheet} from 'react-native';
 import {useAppTheme} from 'src/theme';
 import {APP_STRINGS} from 'src/constants';
 import {SmsHelper} from 'src/module';
+import {NumberUtils} from 'src/utils';
 
 const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
   const {colors} = useAppTheme();
@@ -42,7 +43,9 @@ const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
             },
             styles.debitCreditText,
           ]}>
-          {debitCreditText + APP_STRINGS.RS + extractedData?.amount}
+          {debitCreditText +
+            APP_STRINGS.RS +
+            NumberUtils.formatNumber(extractedData?.amount)}
         </Text>
       </Surface>
     </Surface>

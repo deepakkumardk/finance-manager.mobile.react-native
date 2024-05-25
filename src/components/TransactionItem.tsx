@@ -1,13 +1,19 @@
 import React, {memo} from 'react';
 import {Icon, Surface, Text} from 'react-native-paper';
 import {KeywordData} from '../types';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useAppTheme} from 'src/theme';
 import {APP_STRINGS} from 'src/constants';
 import {SmsHelper} from 'src/module';
 import {NumberUtils} from 'src/utils';
 
-const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
+const TransactionItem = ({
+  extractedData,
+  rawSms,
+  onPress,
+}: KeywordData & {
+  onPress?: () => void;
+}) => {
   const {colors} = useAppTheme();
   const debitCreditText =
     extractedData.type === 'Credit'
@@ -17,38 +23,42 @@ const TransactionItem = ({extractedData, rawSms}: KeywordData) => {
       : '';
 
   return (
-    <Surface mode={'flat'} style={styles.container}>
-      <Surface mode={'flat'}>
-        <Icon source="home" size={24} />
+    <TouchableOpacity activeOpacity={0.8} onPress={() => onPress?.()}>
+      <Surface mode={'flat'} style={styles.container}>
+        <Surface mode={'flat'}>
+          <Icon source="home" size={24} />
+        </Surface>
+        <Surface mode={'flat'} style={styles.leftDetails}>
+          <Text variant="bodyMedium">
+            {extractedData.type === 'Credit'
+              ? ''
+              : SmsHelper.formatSenderName(extractedData.senderUpi) || '-'}
+          </Text>
+          <Text variant="bodySmall" style={{color: colors.onSurfaceDisabled}}>
+            {'Misc • '}
+            {rawSms?.date_display}
+          </Text>
+          {__DEV__ ? (
+            <Text style={{color: colors.onSurfaceDisabled}}>
+              {rawSms?.body}
+            </Text>
+          ) : null}
+        </Surface>
+        <Surface mode={'flat'}>
+          <Text
+            style={[
+              {
+                color: debitCreditText === '+' ? colors.success : colors.error,
+              },
+              styles.debitCreditText,
+            ]}>
+            {debitCreditText +
+              APP_STRINGS.RS +
+              NumberUtils.formatNumber(extractedData?.amount)}
+          </Text>
+        </Surface>
       </Surface>
-      <Surface mode={'flat'} style={styles.leftDetails}>
-        <Text variant="bodyMedium">
-          {extractedData.type === 'Credit'
-            ? ''
-            : SmsHelper.formatSenderName(extractedData.senderUpi) || '-'}
-        </Text>
-        <Text variant="bodySmall" style={{color: colors.onSurfaceDisabled}}>
-          {'Misc • '}
-          {rawSms?.date_display}
-        </Text>
-        {__DEV__ ? (
-          <Text style={{color: colors.onSurfaceDisabled}}>{rawSms?.body}</Text>
-        ) : null}
-      </Surface>
-      <Surface mode={'flat'}>
-        <Text
-          style={[
-            {
-              color: debitCreditText === '+' ? colors.success : colors.error,
-            },
-            styles.debitCreditText,
-          ]}>
-          {debitCreditText +
-            APP_STRINGS.RS +
-            NumberUtils.formatNumber(extractedData?.amount)}
-        </Text>
-      </Surface>
-    </Surface>
+    </TouchableOpacity>
   );
 };
 

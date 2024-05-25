@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {KeywordData} from 'src/types';
-import {TransactionItem} from 'src/components';
+import {AddTransactionInfo, TransactionItem} from 'src/components';
 import AccountCard from 'src/screens/dashboard/components/AccountCard';
 import {Chip, Surface} from 'react-native-paper';
 import {HeaderWithSearch} from './components/HeaderWithSearch';
@@ -21,6 +21,8 @@ export const AccountTransactions = ({navigation, route}: any) => {
     ),
   );
   const [selectedType, setSelectedType] = useState('All');
+  const [showModal, setShowModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<KeywordData>();
 
   const onChipPress = useCallback(
     (tag: string) => {
@@ -85,8 +87,25 @@ export const AccountTransactions = ({navigation, route}: any) => {
       <FlashList
         data={transactionsList}
         keyExtractor={item => item.rawSms.date}
-        renderItem={({item}) => <TransactionItem {...item} />}
+        renderItem={({item}) => (
+          <TransactionItem
+            {...item}
+            onPress={() => {
+              setSelectedItem(item);
+              setShowModal(true);
+            }}
+          />
+        )}
         estimatedItemSize={10}
+      />
+      <AddTransactionInfo
+        visible={showModal}
+        item={selectedItem}
+        onSubmit={() => {}}
+        onDismiss={() => {
+          setSelectedItem(undefined);
+          setShowModal(false);
+        }}
       />
     </SafeAreaView>
   );

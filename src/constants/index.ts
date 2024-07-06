@@ -8,3 +8,20 @@ export const APP_STRINGS = {
 export const AppSingletons = {
   accounts: [] as Partial<AccountDataInfo>[],
 };
+
+export const TRANSACTION_CATEGORY = [
+  'Travel',
+  'Shopping',
+  'Friends & Family',
+  'Home',
+  'Bills',
+  'Foods',
+  'Loans',
+  'Fuel',
+  'Groceries',
+  'Health',
+  'Rent',
+  'Investment',
+  'Office',
+  'Misc',
+];

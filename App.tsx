@@ -16,6 +16,8 @@ import {
 } from 'react-native-paper';
 import merge from 'deepmerge';
 import {AppDarkTheme, AppLightTheme} from 'src/theme';
+import {RealmProvider} from '@realm/react';
+import {SmsModel} from 'src/workflow/database';
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -41,9 +43,11 @@ function App(): React.ReactNode {
       settings={{
         rippleEffectEnabled: true,
       }}>
-      <NavigationContainer theme={theme}>
-        <RootNavigator />
-      </NavigationContainer>
+      <RealmProvider schema={[SmsModel]}>
+        <NavigationContainer theme={theme}>
+          <RootNavigator />
+        </NavigationContainer>
+      </RealmProvider>
     </PaperProvider>
   );
 }

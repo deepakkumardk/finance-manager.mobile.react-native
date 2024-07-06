@@ -21,6 +21,10 @@ export type KeywordData = {
   date_debug?: string;
   rawSms: SMSData;
   extractedData: FinanceDataProps;
+  userData: {
+    category: string;
+    tags: string;
+  };
 };
 
 export type FinanceDataProps = {

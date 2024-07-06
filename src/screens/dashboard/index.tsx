@@ -9,6 +9,7 @@ import {ActivityIndicator, Button, Surface, Text} from 'react-native-paper';
 import {TransactionItem} from 'src/components';
 import {APP_STRINGS} from 'src/constants';
 import {PermissionUtils} from 'src/utils';
+import {useSmsModel} from 'src/hooks';
 
 export const Dashboard = ({navigation}: any) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +17,8 @@ export const Dashboard = ({navigation}: any) => {
     AccountDataInfo[]
   >([]);
   const [allTransactions, setAllTransactions] = useState<KeywordData[]>([]);
+
+  const {smsList: dbSmsList} = useSmsModel();
 
   const navigateToTransactions = (item?: AccountDataInfo) => {
     let newItem = {...item};
@@ -30,20 +33,21 @@ export const Dashboard = ({navigation}: any) => {
     }
     navigation.navigate('AccountTransactions', newItem);
   };
+  const initData = async () => {
+    const isGranted = await PermissionUtils.requestPermission();
+    if (!isGranted) {
+      setIsLoading(false);
+      return;
+    }
+    const res = await SmsModule.getFinanceSms(dbSmsList);
+    setAccountSummaryList(res.accountSummary);
+    setAllTransactions(res.allTransactions);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    const initData = async () => {
-      const isGranted = await PermissionUtils.requestPermission();
-      if (!isGranted) {
-        setIsLoading(false);
-        return;
-      }
-      const res = await SmsModule.getFinanceSms();
-      setAccountSummaryList(res.accountSummary);
-      setAllTransactions(res.allTransactions);
-      setIsLoading(false);
-    };
     initData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {

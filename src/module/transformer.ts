@@ -4,11 +4,24 @@ import {SMSData} from './SMSData';
 import {default as smsSenders} from './smsSenders.json';
 import {financeFeatureExtractor} from './financeDataExtractor';
 
-export const getTransformedSmsList = (
-  smsList: SMSData[],
-  sendersCodeList: string[],
-) => {
+const sendersCodeList = Object.keys(smsSenders);
+
+export const getBankNameCodeMap = () => {
+  const bankNameCodeMap: any = {};
+  Object.entries(smsSenders).forEach(([key, value]) => {
+    bankNameCodeMap[value] = [...(bankNameCodeMap[value] ?? []), key];
+  });
+  return bankNameCodeMap;
+};
+
+export const getTransformedSmsList = (smsList: SMSData[], dbSmsList: any[]) => {
+  const dbSmsMap: any = {};
+  dbSmsList.forEach(dbItem => {
+    dbSmsMap[dbItem.date] = dbItem;
+  });
+
   const bankWiseSmsData: any = {};
+
   smsList
     .map(item => {
       let newAddress = item.address;
@@ -42,6 +55,9 @@ export const getTransformedSmsList = (
           text_debug: sms.body,
           rawSms: sms,
           extractedData,
+          userData: {
+            ...dbSmsMap[sms.date],
+          },
         } as KeywordData);
       const prevList = bankWiseSmsData[sms.fullBankName]?.list ?? [];
       bankWiseSmsData[sms.fullBankName] = {

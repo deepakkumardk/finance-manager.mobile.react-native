@@ -10,6 +10,7 @@ import {
   Text,
   TextInput,
 } from 'react-native-paper';
+import {useSmsModel} from 'src/hooks';
 import {useAppTheme} from 'src/theme';
 import {KeywordData} from 'src/types';
 
@@ -25,9 +26,20 @@ export const AddTransactionInfo = ({
   onDismiss: () => void;
 }) => {
   const {colors} = useAppTheme();
-  const [category, setCategory] = useState('');
-  const [tags, setTags] = useState('');
+  const [category, setCategory] = useState(item?.userData?.category || '');
+  const [tags, setTags] = useState(item?.userData?.tags || '');
   const categoryRef = useRef<any>();
+  const {createOrUpdate} = useSmsModel();
+
+  const onSavePress = () => {
+    const smsModel = {
+      category,
+      date: item?.rawSms.date ?? '',
+      tags,
+    };
+    createOrUpdate(smsModel);
+    onDismiss();
+  };
 
   useEffect(() => {
     if (!visible) {
@@ -45,6 +57,7 @@ export const AddTransactionInfo = ({
           styles.containerStyle,
           {backgroundColor: colors.surfaceVariant},
         ]}>
+        <Text>{'Add Transaction Info'}</Text>
         <Surface mode="flat">
           <Text variant="labelSmall">{'Transaction Amount'}</Text>
           <Text>{item?.extractedData?.amount}</Text>
@@ -73,14 +86,18 @@ export const AddTransactionInfo = ({
                 ))}
             </Surface>
           </ScrollView>
-          <Surface style={[styles.row, styles.input, styles.buttonContainer]}>
+          <Surface
+            mode="flat"
+            style={[styles.row, styles.input, styles.buttonContainer]}>
             <Button mode="outlined" style={styles.button} onPress={onDismiss}>
               {'Cancel'}
             </Button>
             <Button
+              disabled={!category}
               mode="contained"
               style={styles.button}
               onPress={() => {
+                onSavePress();
                 onSubmit({
                   category,
                   tags: tags.split(','),
@@ -111,7 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   chip: {
-    margin: 2,
+    padding: 2,
     borderRadius: 16,
   },
   button: {

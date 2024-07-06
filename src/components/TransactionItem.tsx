@@ -10,6 +10,7 @@ import {NumberUtils} from 'src/utils';
 const TransactionItem = ({
   extractedData,
   rawSms,
+  userData,
   onPress,
 }: KeywordData & {
   onPress?: () => void;
@@ -35,7 +36,8 @@ const TransactionItem = ({
               : SmsHelper.formatSenderName(extractedData.senderUpi) || '-'}
           </Text>
           <Text variant="bodySmall" style={{color: colors.onSurfaceDisabled}}>
-            {'Misc • '}
+            {userData.category}
+            {' • '}
             {rawSms?.date_display}
           </Text>
           {__DEV__ ? (

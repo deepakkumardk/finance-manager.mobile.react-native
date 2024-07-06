@@ -98,15 +98,17 @@ export const AccountTransactions = ({navigation, route}: any) => {
         )}
         estimatedItemSize={10}
       />
-      <AddTransactionInfo
-        visible={showModal}
-        item={selectedItem}
-        onSubmit={() => {}}
-        onDismiss={() => {
-          setSelectedItem(undefined);
-          setShowModal(false);
-        }}
-      />
+      {showModal && (
+        <AddTransactionInfo
+          visible={showModal}
+          item={selectedItem}
+          onSubmit={() => {}}
+          onDismiss={() => {
+            setSelectedItem(undefined);
+            setShowModal(false);
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 };

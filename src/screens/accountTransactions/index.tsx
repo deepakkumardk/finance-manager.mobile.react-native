@@ -1,69 +1,92 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 
 import {FlashList} from '@shopify/flash-list';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {KeywordData} from 'src/types';
+import {AccountDataInfo, KeywordData} from 'src/types';
 import {AddTransactionInfo, TransactionItem} from 'src/components';
 import AccountCard from 'src/screens/dashboard/components/AccountCard';
 import {Chip, Surface} from 'react-native-paper';
 import {HeaderWithSearch} from './components/HeaderWithSearch';
+import {useSmsData} from 'src/context';
+import {useTransactionUpdate} from 'src/hooks';
 
 const types = ['All', 'Credit', 'Debit'];
 
-export const AccountTransactions = ({navigation, route}: any) => {
-  console.log('AccountTransactions -> navigation', navigation);
-  const [transactionsList, setTransactionsList] = useState<KeywordData[]>(
-    route.params.list.filter(
-      (item: any) =>
-        item.extractedData.type === 'Debit' ||
-        item.extractedData.type === 'Credit',
-    ),
-  );
+export const AccountTransactions = ({_, route}: any) => {
+  const {bankName, account, showAllTransactions} = route.params;
+
+  const {accountSummaryList, allTransactions} = useSmsData();
+
+  const {onSubmit} = useTransactionUpdate();
+
+  const accountSummary = accountSummaryList.find(
+    item => item.account === account && item.bankName === bankName,
+  ) as AccountDataInfo;
+
+  const [transactionsList, setTransactionsList] = useState<KeywordData[]>([]);
   const [selectedType, setSelectedType] = useState('All');
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<KeywordData>();
 
-  const onChipPress = useCallback(
-    (tag: string) => {
-      setSelectedType(tag);
-      if (tag === 'All') {
-        setTransactionsList(
-          route.params.list.filter(
-            (item: any) =>
-              item.extractedData.type === 'Debit' ||
-              item.extractedData.type === 'Credit',
-          ),
-        );
-        return;
-      }
-      setTransactionsList(
-        route.params.list.filter(
-          (item: any) => item.extractedData.type === tag,
-        ),
-      );
-    },
-    [route.params],
-  );
+  const initList = () => {
+    const list = showAllTransactions
+      ? allTransactions
+      : accountSummary?.list ?? [];
 
-  const onQueryChange = useCallback(
-    (query: string) => {
-      if (query) {
-        setTransactionsList(
-          route.params.list.filter(
-            (item: KeywordData) =>
-              (item.extractedData.type === 'Debit' ||
-                item.extractedData.type === 'Credit') &&
-              item.extractedData.senderUpi
-                ?.toLowerCase()
-                ?.includes(query.toLowerCase()),
-          ),
-        );
-        return;
-      }
-    },
-    [route.params],
-  );
+    setTransactionsList(
+      list.filter(
+        (item: any) =>
+          item.extractedData.type === 'Debit' ||
+          item.extractedData.type === 'Credit',
+      ),
+    );
+  };
+
+  useEffect(() => {
+    initList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allTransactions, accountSummary]);
+
+  const onChipPress = useCallback((tag: string) => {
+    setSelectedType(tag);
+    if (tag === 'All') {
+      initList();
+      return;
+    }
+    const list = showAllTransactions
+      ? allTransactions
+      : accountSummary?.list ?? [];
+    setTransactionsList(
+      list.filter((item: any) => item.extractedData.type === tag),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onQueryChange = useCallback((query: string) => {
+    if (query) {
+      const list = showAllTransactions
+        ? allTransactions
+        : accountSummary?.list ?? [];
+
+      setTransactionsList(
+        list.filter((item: KeywordData) => {
+          const contains = (text?: string) =>
+            text?.toLowerCase()?.includes(query.toLowerCase());
+
+          return (
+            (item.extractedData.type === 'Debit' ||
+              item.extractedData.type === 'Credit') &&
+            (contains(item.extractedData.senderUpi) ||
+              contains(item.userData.category) ||
+              contains(item.userData.tags))
+          );
+        }),
+      );
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,7 +94,7 @@ export const AccountTransactions = ({navigation, route}: any) => {
         onQueryChange={onQueryChange}
         onSearchHide={() => onChipPress(selectedType)}
       />
-      <AccountCard {...route.params} onPress={() => {}} />
+      <AccountCard {...accountSummary} onPress={() => {}} />
       <Surface style={styles.row}>
         {types.map(type => (
           <Chip
@@ -102,7 +125,12 @@ export const AccountTransactions = ({navigation, route}: any) => {
         <AddTransactionInfo
           visible={showModal}
           item={selectedItem}
-          onSubmit={() => {}}
+          onSubmit={data => {
+            onSubmit(data, {
+              account,
+              bankName,
+            });
+          }}
           onDismiss={() => {
             setSelectedItem(undefined);
             setShowModal(false);

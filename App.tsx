@@ -18,6 +18,7 @@ import merge from 'deepmerge';
 import {AppDarkTheme, AppLightTheme} from 'src/theme';
 import {RealmProvider} from '@realm/react';
 import {SmsModel} from 'src/workflow/database';
+import {SmsDataProvider} from 'src/context';
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -45,7 +46,9 @@ function App(): React.ReactNode {
       }}>
       <RealmProvider schema={[SmsModel]}>
         <NavigationContainer theme={theme}>
-          <RootNavigator />
+          <SmsDataProvider>
+            <RootNavigator />
+          </SmsDataProvider>
         </NavigationContainer>
       </RealmProvider>
     </PaperProvider>

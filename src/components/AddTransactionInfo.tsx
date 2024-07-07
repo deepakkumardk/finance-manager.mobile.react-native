@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {ScrollView} from 'react-native';
-import {StyleSheet} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {
   Button,
   Chip,
@@ -22,7 +21,7 @@ export const AddTransactionInfo = ({
 }: {
   visible: boolean;
   item?: KeywordData;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: KeywordData) => void;
   onDismiss: () => void;
 }) => {
   const {colors} = useAppTheme();
@@ -98,9 +97,13 @@ export const AddTransactionInfo = ({
               style={styles.button}
               onPress={() => {
                 onSavePress();
+                // @ts-ignore
                 onSubmit({
-                  category,
-                  tags: tags.split(','),
+                  ...item,
+                  userData: {
+                    category,
+                    tags: tags,
+                  },
                 });
               }}>
               {'Save'}

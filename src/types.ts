@@ -43,3 +43,10 @@ export type TagsDataProps = {
     data: KeywordData[];
   };
 };
+
+export type SmsDataContextProps = {
+  accountSummaryList: AccountDataInfo[];
+  allTransactions: KeywordData[];
+  setAccountSummaryList: (data: AccountDataInfo[]) => void;
+  setAllTransactions: (data: KeywordData[]) => void;
+};

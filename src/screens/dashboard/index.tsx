@@ -1,54 +1,32 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {SmsModule} from '../../module';
-import {AccountDataInfo, KeywordData} from '../../types';
+import {AccountDataInfo, KeywordData} from 'src/types';
 import {AllAccountsCarousel} from './components/AllAccountsCarousel';
 import {ActivityIndicator, Button, Surface, Text} from 'react-native-paper';
-import {TransactionItem} from 'src/components';
+import {AddTransactionInfo, TransactionItem} from 'src/components';
 import {APP_STRINGS} from 'src/constants';
-import {PermissionUtils} from 'src/utils';
-import {useSmsModel} from 'src/hooks';
+import {useSmsData} from 'src/context';
+import {useTransactionUpdate} from 'src/hooks';
 
 export const Dashboard = ({navigation}: any) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [accountSummaryList, setAccountSummaryList] = useState<
-    AccountDataInfo[]
-  >([]);
-  const [allTransactions, setAllTransactions] = useState<KeywordData[]>([]);
+  const {accountSummaryList, allTransactions} = useSmsData();
 
-  const {smsList: dbSmsList} = useSmsModel();
+  const {onSubmit} = useTransactionUpdate();
+
+  const [isLoading, _] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<KeywordData>();
 
   const navigateToTransactions = (item?: AccountDataInfo) => {
-    let newItem = {...item};
-    if (!item) {
-      const summaryItem = accountSummaryList.find(
-        summary => summary.bankName === APP_STRINGS.ALL_ACCOUNTS,
-      );
-      newItem = {...summaryItem};
-    }
-    if (newItem?.bankName === APP_STRINGS.ALL_ACCOUNTS) {
-      newItem.list = allTransactions;
-    }
-    navigation.navigate('AccountTransactions', newItem);
+    navigation.navigate('AccountTransactions', {
+      account: item?.account,
+      bankName: item?.bankName,
+      showAllTransactions: item?.bankName === APP_STRINGS.ALL_ACCOUNTS,
+    });
   };
-  const initData = async () => {
-    const isGranted = await PermissionUtils.requestPermission();
-    if (!isGranted) {
-      setIsLoading(false);
-      return;
-    }
-    const res = await SmsModule.getFinanceSms(dbSmsList);
-    setAccountSummaryList(res.accountSummary);
-    setAllTransactions(res.allTransactions);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    initData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (isLoading) {
     return (
@@ -72,7 +50,11 @@ export const Dashboard = ({navigation}: any) => {
           <Button
             mode="text"
             onPress={() => {
-              navigateToTransactions();
+              const item = accountSummaryList.find(
+                summaryItem =>
+                  summaryItem?.bankName === APP_STRINGS.ALL_ACCOUNTS,
+              );
+              navigateToTransactions(item);
             }}>
             {'See All'}
           </Button>
@@ -83,8 +65,32 @@ export const Dashboard = ({navigation}: any) => {
             .filter(item => item.extractedData.type !== 'Balance')
             .slice(0, 20)}
           keyExtractor={item => item.rawSms.date}
-          renderItem={({item}) => <TransactionItem {...item} />}
+          renderItem={({item}) => (
+            <TransactionItem
+              {...item}
+              onPress={() => {
+                setSelectedItem(item);
+                setShowModal(true);
+              }}
+            />
+          )}
         />
+        {showModal && (
+          <AddTransactionInfo
+            visible={showModal}
+            item={selectedItem}
+            onSubmit={data => {
+              onSubmit(data, {
+                account: selectedItem?.extractedData?.account,
+                bankName: selectedItem?.extractedData?.bankName,
+              });
+            }}
+            onDismiss={() => {
+              setSelectedItem(undefined);
+              setShowModal(false);
+            }}
+          />
+        )}
       </Surface>
     </SafeAreaView>
   );

@@ -31,20 +31,24 @@ const TransactionItem = ({
         </Surface>
         <Surface mode={'flat'} style={styles.leftDetails}>
           <Text variant="bodyMedium">
-            {extractedData.type === 'Credit'
-              ? ''
-              : SmsHelper.formatSenderName(extractedData.senderUpi) || '-'}
+            {SmsHelper.formatSenderName(
+              extractedData.senderUpi,
+              extractedData.account,
+            ) || '-'}
           </Text>
-          <Text variant="bodySmall" style={{color: colors.onSurfaceDisabled}}>
+          <Text variant="bodySmall" style={{color: colors.primary}}>
             {userData.category}
-            {' • '}
-            {rawSms?.date_display}
+            <Text style={{color: colors.onSurfaceDisabled}}>
+              {' • '}
+              {rawSms?.date_display}
+            </Text>
           </Text>
           {__DEV__ ? (
             <Text style={{color: colors.onSurfaceDisabled}}>
               {rawSms?.body}
             </Text>
           ) : null}
+          <Text>{extractedData.bankName}</Text>
         </Surface>
         <Surface mode={'flat'}>
           <Text
@@ -73,10 +77,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    // alignSelf: 'center',
     alignItems: 'center',
-    // alignContent: 'center',
-    // justifyContent: 'space-between',
     flex: 1,
     width: '100%',
     padding: 8,
@@ -84,5 +85,6 @@ const styles = StyleSheet.create({
   debitCreditText: {
     alignItems: 'center',
     textAlignVertical: 'center',
+    textAlign: 'center',
   },
 });

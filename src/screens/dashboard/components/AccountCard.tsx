@@ -59,25 +59,19 @@ const AccountCard = ({
                   : colors.secondaryContainer,
               },
             ]}>
-            <Text style={{color: colors.successContainer}}>
-              <Icon
-                source={'trending-up'}
-                size={16}
-                color={colors.successContainer}
-              />
+            <Text style={{color: colors.success}}>
+              <Icon source={'trending-up'} size={16} color={colors.success} />
               {' in'}
             </Text>
             <Text style={{color: colors.shadow}}>
               {APP_STRINGS.RS}
               {NumberUtils.formatNumber(currentMonthIn)}
             </Text>
-            <Divider style={styles.divider} />
-            <Text style={{color: colors.errorContainer}}>
-              <Icon
-                source={'trending-down'}
-                size={16}
-                color={colors.errorContainer}
-              />
+            <Divider
+              style={[styles.divider, {backgroundColor: colors.surface}]}
+            />
+            <Text style={{color: colors.error}}>
+              <Icon source={'trending-down'} size={16} color={colors.error} />
               {' out'}
             </Text>
             <Text style={{color: colors.shadow}}>

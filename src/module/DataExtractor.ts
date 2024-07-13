@@ -92,10 +92,20 @@ export class DataExtractor {
       // lookbehind and lookahead to just include the in-between text
       const alternateSenderRegex =
         //   /(?<=\sto\syour\s(account|a\/c))(.*?)(?=\s(Ref|on))/gi;
-        /(?<=\sto\syour\s|to\s)(.*?)(?=\s(?=Ref|on))/gi;
-      senderUpi = this.findFirstMatch(alternateSenderRegex)
-        ?.replace(/your (account|ac\.?|a\/c)/i, '')
-        ?.trim();
+        [
+          /(?<=from\sbeneficiary\s)(.*?)(?=\s(?=ACC|UTR|Ref|on))/gi,
+          /(?<=\sto\syour\s)(.*?)(?=\s(?=via|Ref|on))/gi,
+          /(?<=\sto\s)(.*?)(?=\s(?=via|Ref|on))/gi,
+          // /(?<=from\sbeneficiary\s|\sto\syour\s|to\s)(.*?)(?=\s(?=ACC|Ref|on|))/gi,
+        ];
+      alternateSenderRegex.forEach(regex => {
+        if (senderUpi) {
+          return;
+        }
+        senderUpi = this.findFirstMatch(regex)
+          ?.replace(/your (account|ac\.?|a\/c)/i, '')
+          ?.trim();
+      });
     }
     return senderUpi;
   }

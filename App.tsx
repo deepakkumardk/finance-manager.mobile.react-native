@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {useColorScheme} from 'react-native';
+import {StatusBar, useColorScheme} from 'react-native';
 
 import {RootNavigator} from './src/navigation/RootNavigator';
 import {PaperProvider} from 'react-native-paper';
@@ -46,6 +46,10 @@ function App(): React.ReactNode {
       }}>
       <RealmProvider schema={[SmsModel]}>
         <NavigationContainer theme={theme}>
+          <StatusBar
+            barStyle={!isDarkMode ? 'dark-content' : 'light-content'}
+            backgroundColor={theme.colors.background}
+          />
           <SmsDataProvider>
             <RootNavigator />
           </SmsDataProvider>

@@ -8,6 +8,8 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import {Settings} from 'src/screens/settings';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {CreateNew} from 'src/screens/createNew';
+import {commonHeaderStyle} from 'src/navigation/commonHeaderStyle';
+import {useTheme} from 'react-native-paper';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,14 +25,17 @@ const getTabIcon = ({focused, size, name, color}: any) => {
   );
 };
 const BottomTabs = () => {
+  const {colors} = useTheme();
   return (
     <Tab.Navigator
+      // @ts-ignore
       screenOptions={{
+        ...commonHeaderStyle(colors),
         tabBarStyle: {
-          height: 64,
+          height: 60,
           borderRadius: 36,
-          marginVertical: 12,
-          marginHorizontal: 20,
+          marginBottom: 4,
+          marginHorizontal: 12,
         },
         tabBarLabelStyle: {
           paddingBottom: 8,
@@ -43,6 +48,7 @@ const BottomTabs = () => {
         name="Dashboard"
         component={Dashboard}
         options={{
+          title: 'Home',
           tabBarLabel: 'Home',
           tabBarIcon: (props: any) => getTabIcon({...props, name: 'home'}),
         }}
@@ -51,6 +57,7 @@ const BottomTabs = () => {
         name="Stats"
         component={Stats}
         options={{
+          title: 'Statistics',
           tabBarLabel: 'Stats',
           tabBarIcon: (props: any) => getTabIcon({...props, name: 'pie-chart'}),
         }}
@@ -59,6 +66,7 @@ const BottomTabs = () => {
         name="CreateNew"
         component={CreateNew}
         options={{
+          title: 'Create New Transaction',
           tabBarLabel: 'Create',
           tabBarIcon: (props: any) =>
             getTabIcon({...props, name: 'add-circle'}),
@@ -68,6 +76,7 @@ const BottomTabs = () => {
         name="Settings"
         component={Settings}
         options={{
+          title: 'Settings',
           tabBarLabel: 'Settings',
           tabBarIcon: (props: any) => getTabIcon({...props, name: 'settings'}),
         }}
@@ -75,19 +84,23 @@ const BottomTabs = () => {
     </Tab.Navigator>
   );
 };
-export const RootNavigator = ({}: any) => (
-  <Stack.Navigator>
-    <Stack.Screen
-      name="BottomTabs"
-      component={BottomTabs}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <Stack.Screen
-      name="AccountTransactions"
-      component={AccountTransactions}
-      options={{headerShown: false}}
-    />
-  </Stack.Navigator>
-);
+export const RootNavigator = ({}: any) => {
+  const {colors} = useTheme();
+
+  return (
+    <Stack.Navigator screenOptions={{...commonHeaderStyle(colors)}}>
+      <Stack.Screen
+        name="BottomTabs"
+        component={BottomTabs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="AccountTransactions"
+        component={AccountTransactions}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  );
+};

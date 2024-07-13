@@ -9,9 +9,11 @@ import {
   Text,
   TextInput,
 } from 'react-native-paper';
+import {APP_STRINGS} from 'src/constants';
 import {useSmsModel} from 'src/hooks';
 import {useAppTheme} from 'src/theme';
 import {KeywordData} from 'src/types';
+import {NumberUtils} from 'src/utils';
 
 export const AddTransactionInfo = ({
   visible,
@@ -25,6 +27,14 @@ export const AddTransactionInfo = ({
   onDismiss: () => void;
 }) => {
   const {colors} = useAppTheme();
+
+  const debitCreditText =
+    item?.extractedData.type === 'Credit'
+      ? '+'
+      : item?.extractedData.type === 'Debit'
+      ? '-'
+      : '';
+
   const [category, setCategory] = useState(item?.userData?.category || '');
   const [tags, setTags] = useState(item?.userData?.tags || '');
   const categoryRef = useRef<any>();
@@ -54,12 +64,46 @@ export const AddTransactionInfo = ({
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.containerStyle,
-          {backgroundColor: colors.surfaceVariant},
+          {backgroundColor: colors.background},
         ]}>
-        <Text>{'Add Transaction Info'}</Text>
-        <Surface mode="flat">
-          <Text variant="labelSmall">{'Transaction Amount'}</Text>
-          <Text>{item?.extractedData?.amount}</Text>
+        <Text variant="titleMedium" style={styles.center}>
+          {'Add Transaction Info'}
+        </Text>
+        <Surface mode="flat" style={{backgroundColor: colors.background}}>
+          <Surface
+            mode="flat"
+            style={[styles.textApart, {backgroundColor: colors.background}]}>
+            <Text variant="labelSmall">
+              {debitCreditText === '+' ? 'From' : 'To'}
+            </Text>
+            <Text>{item?.extractedData.senderUpi || 'N/A'}</Text>
+          </Surface>
+          <Surface
+            mode="flat"
+            style={[styles.textApart, {backgroundColor: colors.background}]}>
+            <Text variant="labelSmall">{'Amount'}</Text>
+            <Text
+              style={[
+                {
+                  color:
+                    debitCreditText === '+' ? colors.success : colors.error,
+                },
+                styles.debitCreditText,
+              ]}>
+              {debitCreditText +
+                APP_STRINGS.RS +
+                NumberUtils.formatNumber(item?.extractedData?.amount)}
+            </Text>
+          </Surface>
+          {item?.extractedData.availableBalance ? (
+            <Surface
+              mode="flat"
+              style={[styles.textApart, {backgroundColor: colors.background}]}>
+              <Text variant="labelSmall">{'Balance at that time'}</Text>
+              <Text>{item?.extractedData.availableBalance}</Text>
+            </Surface>
+          ) : null}
+
           <TextInput
             ref={categoryRef}
             style={styles.input}
@@ -136,11 +180,25 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+    marginHorizontal: 4,
   },
   input: {
     marginVertical: 8,
   },
   row: {
     flexDirection: 'row',
+  },
+
+  debitCreditText: {
+    alignItems: 'center',
+    textAlignVertical: 'center',
+  },
+  textApart: {
+    marginTop: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  center: {
+    alignSelf: 'center',
   },
 });

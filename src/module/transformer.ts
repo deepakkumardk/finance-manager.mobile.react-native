@@ -57,6 +57,7 @@ export const getTransformedSmsList = (smsList: SMSData[], dbSmsList: any[]) => {
           extractedData,
           userData: {
             ...dbSmsMap[sms.date],
+            category: dbSmsMap[sms.date]?.category || 'Misc',
           },
         } as KeywordData);
       const prevList = bankWiseSmsData[sms.fullBankName]?.list ?? [];

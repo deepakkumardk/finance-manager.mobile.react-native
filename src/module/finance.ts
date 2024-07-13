@@ -180,5 +180,18 @@ export function orderByAccount(bankWiseSmsData: BankDataInfo) {
   // Insert the All Accounts at first index
   accountSummary.splice(0, 0, allAccountSummaryData);
 
+  // Sort the whole list by date
+  allTransactions = allTransactions.sort((a, b) => {
+    const date1 = a.rawSms.date;
+    const date2 = b.rawSms.date;
+    if (date1 < date2) {
+      return 1;
+    }
+    if (date1 > date2) {
+      return -1;
+    }
+    return 0;
+  });
+
   return {accountSummary, allTransactions};
 }

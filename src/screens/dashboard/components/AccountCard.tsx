@@ -1,17 +1,12 @@
 import React, {memo, useRef} from 'react';
 import {StyleSheet} from 'react-native';
 
-import {
-  Divider,
-  Icon,
-  Surface,
-  Text,
-  TouchableRipple,
-} from 'react-native-paper';
+import {Divider, Icon, Surface, Text} from 'react-native-paper';
 import {NumberUtils} from 'src/utils';
 import {AccountDataInfo} from 'src/types';
 import {useAppTheme} from 'src/theme';
 import {APP_STRINGS} from 'src/constants';
+import {TouchableOpacity} from 'react-native';
 
 const AccountCard = ({
   account,
@@ -30,7 +25,7 @@ const AccountCard = ({
 
   return (
     <Surface mode={'flat'} style={[styles.container, bgStyle]}>
-      <TouchableRipple onPress={onPress}>
+      <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
         <Surface mode={'flat'} style={[styles.innerContainer, bgStyle]}>
           <Surface mode={'flat'} style={[styles.firstHalf, bgStyle]}>
             <Text variant="labelMedium">{bankName}</Text>
@@ -80,7 +75,7 @@ const AccountCard = ({
             </Text>
           </Surface>
         </Surface>
-      </TouchableRipple>
+      </TouchableOpacity>
     </Surface>
   );
 };

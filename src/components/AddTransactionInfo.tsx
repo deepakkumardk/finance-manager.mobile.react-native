@@ -9,7 +9,8 @@ import {
   Text,
   TextInput,
 } from 'react-native-paper';
-import {APP_STRINGS} from 'src/constants';
+import CategoryPicker from './CategoryPicker';
+import {APP_STRINGS, TRANSACTION_CATEGORY} from 'src/constants';
 import {useSmsModel} from 'src/hooks';
 import {useAppTheme} from 'src/theme';
 import {KeywordData} from 'src/types';
@@ -28,6 +29,10 @@ export const AddTransactionInfo = ({
 }) => {
   const {colors} = useAppTheme();
 
+  const [showMessage, setShowMessage] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [categoryList, setCategoryList] = useState(TRANSACTION_CATEGORY);
+
   const debitCreditText =
     item?.extractedData.type === 'Credit'
       ? '+'
@@ -37,7 +42,8 @@ export const AddTransactionInfo = ({
 
   const [category, setCategory] = useState(item?.userData?.category || '');
   const [tags, setTags] = useState(item?.userData?.tags || '');
-  const categoryRef = useRef<any>();
+  // const categoryRef = useRef(category);
+  const iconRef = useRef(category);
   const {createOrUpdate} = useSmsModel();
 
   const onSavePress = () => {
@@ -54,7 +60,6 @@ export const AddTransactionInfo = ({
     if (!visible) {
       return;
     }
-    categoryRef.current?.focus();
   }, [visible]);
 
   return (
@@ -69,6 +74,21 @@ export const AddTransactionInfo = ({
         <Text variant="titleMedium" style={styles.center}>
           {'Add Transaction Info'}
         </Text>
+        <Button
+          mode="text"
+          compact={true}
+          style={styles.createNew}
+          labelStyle={styles.smallText}
+          onPress={() => setShowMessage(prev => !prev)}>
+          {showMessage ? 'Hide' : 'Show'}
+          {' Message'}
+        </Button>
+        {showMessage ? (
+          <Text style={{color: colors.onSurfaceDisabled}}>
+            {item?.rawSms.body}
+          </Text>
+        ) : null}
+
         <Surface mode="flat" style={{backgroundColor: colors.background}}>
           <Surface
             mode="flat"
@@ -104,14 +124,14 @@ export const AddTransactionInfo = ({
             </Surface>
           ) : null}
 
-          <TextInput
-            ref={categoryRef}
-            style={styles.input}
-            label="Category"
-            placeholder="Unique category of the transaction"
-            value={category}
-            onChangeText={value => setCategory(value)}
+          <CategoryPicker
+            category={item?.userData.category}
+            items={categoryList}
+            onChange={(value: string) => setCategory(value)}
           />
+          <Button icon={'plus'} style={styles.createNew}>
+            {'Create New'}
+          </Button>
           <TextInput
             label="Tags"
             placeholder="Comma (,) separated tags"
@@ -119,7 +139,9 @@ export const AddTransactionInfo = ({
             onChangeText={value => setTags(value)}
           />
           <ScrollView horizontal>
-            <Surface style={styles.row}>
+            <Surface
+              style={[styles.row, {backgroundColor: colors.background}]}
+              mode="flat">
               {tags &&
                 tags.split(',').map(tag => (
                   <Chip key={tag} style={styles.chip}>
@@ -131,7 +153,12 @@ export const AddTransactionInfo = ({
           </ScrollView>
           <Surface
             mode="flat"
-            style={[styles.row, styles.input, styles.buttonContainer]}>
+            style={[
+              styles.row,
+              styles.input,
+              styles.buttonContainer,
+              {backgroundColor: colors.background},
+            ]}>
             <Button mode="outlined" style={styles.button} onPress={onDismiss}>
               {'Cancel'}
             </Button>
@@ -146,6 +173,7 @@ export const AddTransactionInfo = ({
                   ...item,
                   userData: {
                     category,
+                    icon: iconRef.current,
                     tags: tags,
                   },
                 });
@@ -175,12 +203,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   chip: {
-    padding: 2,
+    marginVertical: 4,
     borderRadius: 16,
   },
   button: {
     flex: 1,
     marginHorizontal: 4,
+  },
+  createNew: {
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
   },
   input: {
     marginVertical: 8,
@@ -200,5 +232,9 @@ const styles = StyleSheet.create({
   },
   center: {
     alignSelf: 'center',
+    marginBottom: 8,
+  },
+  smallText: {
+    fontSize: 12,
   },
 });

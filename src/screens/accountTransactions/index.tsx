@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 
 import {FlashList} from '@shopify/flash-list';
@@ -29,6 +29,8 @@ export const AccountTransactions = ({_, route}: any) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<KeywordData>();
 
+  const selectedTypeRef = useRef(selectedType);
+
   const initList = () => {
     const list = showAllTransactions
       ? allTransactions
@@ -45,11 +47,13 @@ export const AccountTransactions = ({_, route}: any) => {
 
   useEffect(() => {
     initList();
+    onChipPress(selectedTypeRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allTransactions, accountSummary]);
 
   const onChipPress = useCallback((tag: string) => {
     setSelectedType(tag);
+    selectedTypeRef.current = tag;
     if (tag === 'All') {
       initList();
       return;

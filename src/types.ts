@@ -23,6 +23,7 @@ export type KeywordData = {
   extractedData: FinanceDataProps;
   userData: {
     category: string;
+    icon: string;
     tags: string;
   };
 };

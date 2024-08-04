@@ -1,4 +1,4 @@
-import {AccountDataInfo} from 'src/types';
+import {AccountDataInfo, CategoryProps} from 'src/types';
 
 export const APP_STRINGS = {
   RS: '₹',
@@ -9,22 +9,24 @@ export const AppSingletons = {
   accounts: [] as Partial<AccountDataInfo>[],
 };
 
-export const TRANSACTION_CATEGORY = [
-  {label: 'Misc', icon: 'database-settings'},
-  {label: 'Bills', icon: 'note-text'},
-  {label: 'Education', icon: 'book'},
-  {label: 'EMI', icon: 'calculator'},
-  {label: 'Foods', icon: 'food-variant'},
-  {label: 'Fuel', icon: 'fuel'},
-  {label: 'Friends & Family', icon: 'account-multiple'},
-  {label: 'Groceries', icon: 'cart-variant'},
-  {label: 'Health', icon: 'heart-pulse'},
-  {label: 'Home', icon: 'home-outline'},
-  {label: 'Investment', icon: 'trending-up'},
-  {label: 'Loans', icon: 'trending-down'},
-  {label: 'Office', icon: 'office-building-marker'},
-  {label: 'Refund', icon: 'cash-refund'},
-  {label: 'Rent', icon: 'bunk-bed'},
-  {label: 'Shopping', icon: 'shopping'},
-  {label: 'Travel', icon: 'map-marker-radius'},
+export const TRANSACTION_CATEGORY: CategoryProps[] = [
+  {label: 'Misc', icon: 'puzzle', color: ''},
+  {label: 'Bills', icon: 'note-text', color: ''},
+  {label: 'Education', icon: 'book', color: ''},
+  {label: 'EMI', icon: 'calculator', color: ''},
+  {label: 'Foods', icon: 'food-variant', color: ''},
+  {label: 'Fuel', icon: 'fuel', color: ''},
+  {label: 'Friends & Family', icon: 'account-multiple', color: ''},
+  {label: 'Groceries', icon: 'cart-variant', color: ''},
+  {label: 'Health', icon: 'heart-pulse', color: ''},
+  {label: 'Home', icon: 'home-outline', color: ''},
+  {label: 'Interest', icon: 'piggy-bank-outline', color: ''},
+  {label: 'Investment', icon: 'trending-up', color: ''},
+  {label: 'Loans', icon: 'trending-down', color: ''},
+  {label: 'Office', icon: 'office-building-marker', color: ''},
+  {label: 'Refund', icon: 'cash-refund', color: ''},
+  {label: 'Rent', icon: 'bunk-bed', color: ''},
+  {label: 'Shopping', icon: 'shopping', color: ''},
+  {label: 'Salary', icon: 'currency-inr', color: ''},
+  {label: 'Travel', icon: 'map-marker-radius', color: ''},
 ];

@@ -1,10 +1,18 @@
-import {AppSingletons} from 'src/constants';
+import {AppSingletons, TRANSACTION_CATEGORY} from 'src/constants';
+import {CategoryProps} from 'src/types';
 
 export const SmsHelper = {
-  formatSenderName(senderName = '', accountNumber: string = '') {
+  formatSenderName({
+    senderName = '',
+    accountNumber = '',
+  }: {
+    senderName?: string;
+    accountNumber?: string;
+  }) {
     if (senderName.includes('cred.club')) {
       return 'Cred Payment';
     }
+
     let formattedName = senderName;
 
     let isFound = false;
@@ -31,5 +39,39 @@ export const SmsHelper = {
     }
 
     return formattedName;
+  },
+  findAutoCategory: (smsText: string) => {
+    const _smsText = smsText.toLowerCase();
+    const categoryMap: any = {};
+    TRANSACTION_CATEGORY.forEach(item => {
+      categoryMap[item.label] = item;
+    });
+    let category: CategoryProps = categoryMap.Misc;
+
+    const contains = (compareText: string) => {
+      return _smsText.toLowerCase().includes(compareText.toLowerCase());
+    };
+
+    if (contains('Monthly interest')) {
+      category = categoryMap.Interest;
+    } else if (contains('Refund')) {
+      category = categoryMap.Refund;
+    } else if (contains('EMI')) {
+      category = categoryMap.EMI;
+    } else if (contains('Salary')) {
+      category = categoryMap.Salary;
+    } else if (contains('Shopping')) {
+      category = categoryMap.Shopping;
+    }
+
+    return category;
+  },
+  findAutoTags: (smsText: string) => {
+    const _smsText = smsText.toLowerCase();
+    let tags = '';
+    if (_smsText.includes('UPI'.toLowerCase())) {
+      tags = 'UPI';
+    }
+    return tags;
   },
 };

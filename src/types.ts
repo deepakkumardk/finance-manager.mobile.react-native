@@ -16,6 +16,12 @@ export type AccountDataInfo = {
   reportedDateDisplay: string;
 };
 
+export type CategoryProps = {
+  label: string;
+  icon: string;
+  color: string;
+};
+
 export type KeywordData = {
   text_debug?: string;
   date_debug?: string;
@@ -25,6 +31,7 @@ export type KeywordData = {
     category: string;
     icon: string;
     tags: string;
+    comment: string;
   };
 };
 
@@ -50,4 +57,10 @@ export type SmsDataContextProps = {
   allTransactions: KeywordData[];
   setAccountSummaryList: (data: AccountDataInfo[]) => void;
   setAllTransactions: (data: KeywordData[]) => void;
+};
+
+export type AddTransactionProps = {
+  item?: KeywordData;
+  onSubmit: (data: KeywordData) => void;
+  onDismiss: () => void;
 };

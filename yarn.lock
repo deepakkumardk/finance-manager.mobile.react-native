@@ -1676,7 +1676,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:^19.3.0":
+"@commitlint/cli@npm:19.3.0":
   version: 19.3.0
   resolution: "@commitlint/cli@npm:19.3.0"
   dependencies:
@@ -1693,7 +1693,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^19.2.2":
+"@commitlint/config-conventional@npm:19.2.2":
   version: 19.2.2
   resolution: "@commitlint/config-conventional@npm:19.2.2"
   dependencies:
@@ -2773,7 +2773,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/bottom-tabs@npm:^6.5.20":
+"@react-navigation/bottom-tabs@npm:6.5.20":
   version: 6.5.20
   resolution: "@react-navigation/bottom-tabs@npm:6.5.20"
   dependencies:
@@ -2818,7 +2818,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/material-top-tabs@npm:^6.6.13":
+"@react-navigation/material-top-tabs@npm:6.6.13":
   version: 6.6.13
   resolution: "@react-navigation/material-top-tabs@npm:6.6.13"
   dependencies:
@@ -2834,7 +2834,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^6.1.17":
+"@react-navigation/native@npm:6.1.17":
   version: 6.1.17
   resolution: "@react-navigation/native@npm:6.1.17"
   dependencies:
@@ -2858,7 +2858,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/stack@npm:^6.3.29":
+"@react-navigation/stack@npm:6.3.29":
   version: 6.3.29
   resolution: "@react-navigation/stack@npm:6.3.29"
   dependencies:
@@ -2883,7 +2883,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@realm/react@npm:^0.7.0":
+"@realm/react@npm:0.7.0":
   version: 0.7.0
   resolution: "@realm/react@npm:0.7.0"
   dependencies:
@@ -2916,7 +2916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/flash-list@npm:^1.6.4":
+"@shopify/flash-list@npm:1.6.4":
   version: 1.6.4
   resolution: "@shopify/flash-list@npm:1.6.4"
   dependencies:
@@ -3117,7 +3117,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native-snap-carousel@npm:^3.8.11":
+"@types/react-native-snap-carousel@npm:3.8.11":
   version: 3.8.11
   resolution: "@types/react-native-snap-carousel@npm:3.8.11"
   dependencies:
@@ -3127,7 +3127,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native-vector-icons@npm:^6.4.18":
+"@types/react-native-vector-icons@npm:6.4.18":
   version: 6.4.18
   resolution: "@types/react-native-vector-icons@npm:6.4.18"
   dependencies:
@@ -3858,7 +3858,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-module-resolver@npm:^5.0.2":
+"babel-plugin-module-resolver@npm:5.0.2":
   version: 5.0.2
   resolution: "babel-plugin-module-resolver@npm:5.0.2"
   dependencies:
@@ -4730,17 +4730,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deepmerge@npm:4.3.1, deepmerge@npm:^4.2.2, deepmerge@npm:^4.3.0":
+  version: 4.3.1
+  resolution: "deepmerge@npm:4.3.1"
+  checksum: 2024c6a980a1b7128084170c4cf56b0fd58a63f2da1660dcfe977415f27b17dbe5888668b59d0b063753f3220719d5e400b7f113609489c90160bb9a5518d052
+  languageName: node
+  linkType: hard
+
 "deepmerge@npm:^3.2.0":
   version: 3.3.0
   resolution: "deepmerge@npm:3.3.0"
   checksum: 4322195389e0170a0443c07b36add19b90249802c4b47b96265fdc5f5d8beddf491d5e50cbc5bfd65f85ccf76598173083863c202f5463b3b667aca8be75d5ac
-  languageName: node
-  linkType: hard
-
-"deepmerge@npm:^4.2.2, deepmerge@npm:^4.3.0, deepmerge@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "deepmerge@npm:4.3.1"
-  checksum: 2024c6a980a1b7128084170c4cf56b0fd58a63f2da1660dcfe977415f27b17dbe5888668b59d0b063753f3220719d5e400b7f113609489c90160bb9a5518d052
   languageName: node
   linkType: hard
 
@@ -5695,49 +5695,49 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
-    "@commitlint/cli": ^19.3.0
-    "@commitlint/config-conventional": ^19.2.2
+    "@commitlint/cli": 19.3.0
+    "@commitlint/config-conventional": 19.2.2
     "@react-native/babel-preset": 0.74.83
     "@react-native/eslint-config": 0.74.83
     "@react-native/metro-config": 0.74.83
     "@react-native/typescript-config": 0.74.83
-    "@react-navigation/bottom-tabs": ^6.5.20
-    "@react-navigation/material-top-tabs": ^6.6.13
-    "@react-navigation/native": ^6.1.17
-    "@react-navigation/stack": ^6.3.29
-    "@realm/react": ^0.7.0
-    "@shopify/flash-list": ^1.6.4
+    "@react-navigation/bottom-tabs": 6.5.20
+    "@react-navigation/material-top-tabs": 6.6.13
+    "@react-navigation/native": 6.1.17
+    "@react-navigation/stack": 6.3.29
+    "@realm/react": 0.7.0
+    "@shopify/flash-list": 1.6.4
     "@types/luxon": 3.4.2
     "@types/react": 18.2.0
-    "@types/react-native-snap-carousel": ^3.8.11
-    "@types/react-native-vector-icons": ^6.4.18
+    "@types/react-native-snap-carousel": 3.8.11
+    "@types/react-native-vector-icons": 6.4.18
     "@types/react-test-renderer": 18.0.0
     babel-jest: 29.6.3
-    babel-plugin-module-resolver: ^5.0.2
-    deepmerge: ^4.3.1
+    babel-plugin-module-resolver: 5.0.2
+    deepmerge: 4.3.1
     eslint: 8.19.0
     jest: 29.6.3
-    lefthook: ^1.6.12
+    lefthook: 1.6.12
     luxon: 3.4.4
-    patch-package: ^8.0.0
+    patch-package: 8.0.0
     prettier: 2.8.8
     react: 18.2.0
     react-native: 0.74.1
-    react-native-device-info: ^10.13.2
-    react-native-dropdown-picker: ^5.4.6
-    react-native-gesture-handler: ^2.16.2
-    react-native-mmkv: ^2.12.2
-    react-native-paper: ^5.12.3
-    react-native-permissions: ^4.1.5
-    react-native-reanimated: ^3.11.0
-    react-native-safe-area-context: ^4.10.1
-    react-native-screens: ^3.31.1
-    react-native-snap-carousel: ^3.9.1
-    react-native-tab-view: ^3.5.2
-    react-native-vector-icons: ^10.1.0
+    react-native-device-info: 10.13.2
+    react-native-dropdown-picker: 5.4.6
+    react-native-gesture-handler: 2.16.2
+    react-native-mmkv: 2.12.2
+    react-native-paper: 5.12.3
+    react-native-permissions: 4.1.5
+    react-native-reanimated: 3.11.0
+    react-native-safe-area-context: 4.10.1
+    react-native-screens: 3.31.1
+    react-native-snap-carousel: 3.9.1
+    react-native-tab-view: 3.5.2
+    react-native-vector-icons: 10.1.0
     react-test-renderer: 18.2.0
-    realm: ^12.9.0
-    string-to-color: ^2.2.2
+    realm: 12.9.0
+    string-to-color: 2.2.2
     typescript: 5.0.4
   languageName: unknown
   linkType: soft
@@ -7693,7 +7693,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lefthook@npm:^1.6.12":
+"lefthook@npm:1.6.12":
   version: 1.6.12
   resolution: "lefthook@npm:1.6.12"
   dependencies:
@@ -9020,7 +9020,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"patch-package@npm:^8.0.0":
+"patch-package@npm:8.0.0":
   version: 8.0.0
   resolution: "patch-package@npm:8.0.0"
   dependencies:
@@ -9460,7 +9460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-device-info@npm:^10.13.2":
+"react-native-device-info@npm:10.13.2":
   version: 10.13.2
   resolution: "react-native-device-info@npm:10.13.2"
   peerDependencies:
@@ -9469,7 +9469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-dropdown-picker@npm:^5.4.6":
+"react-native-dropdown-picker@npm:5.4.6":
   version: 5.4.6
   resolution: "react-native-dropdown-picker@npm:5.4.6"
   peerDependencies:
@@ -9479,7 +9479,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.16.2":
+"react-native-gesture-handler@npm:2.16.2":
   version: 2.16.2
   resolution: "react-native-gesture-handler@npm:2.16.2"
   dependencies:
@@ -9495,7 +9495,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-mmkv@npm:^2.12.2":
+"react-native-mmkv@npm:2.12.2":
   version: 2.12.2
   resolution: "react-native-mmkv@npm:2.12.2"
   peerDependencies:
@@ -9505,7 +9505,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-paper@npm:^5.12.3":
+"react-native-paper@npm:5.12.3":
   version: 5.12.3
   resolution: "react-native-paper@npm:5.12.3"
   dependencies:
@@ -9521,7 +9521,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-permissions@npm:^4.1.5":
+"react-native-permissions@npm:4.1.5":
   version: 4.1.5
   resolution: "react-native-permissions@npm:4.1.5"
   peerDependencies:
@@ -9535,7 +9535,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:^3.11.0":
+"react-native-reanimated@npm:3.11.0":
   version: 3.11.0
   resolution: "react-native-reanimated@npm:3.11.0"
   dependencies:
@@ -9555,7 +9555,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^4.10.1":
+"react-native-safe-area-context@npm:4.10.1":
   version: 4.10.1
   resolution: "react-native-safe-area-context@npm:4.10.1"
   peerDependencies:
@@ -9565,7 +9565,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:^3.31.1":
+"react-native-screens@npm:3.31.1":
   version: 3.31.1
   resolution: "react-native-screens@npm:3.31.1"
   dependencies:
@@ -9578,7 +9578,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-snap-carousel@npm:^3.9.1":
+"react-native-snap-carousel@npm:3.9.1":
   version: 3.9.1
   resolution: "react-native-snap-carousel@npm:3.9.1"
   dependencies:
@@ -9591,7 +9591,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-tab-view@npm:^3.5.2":
+"react-native-tab-view@npm:3.5.2":
   version: 3.5.2
   resolution: "react-native-tab-view@npm:3.5.2"
   dependencies:
@@ -9604,7 +9604,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-vector-icons@npm:^10.1.0":
+"react-native-vector-icons@npm:10.1.0":
   version: 10.1.0
   resolution: "react-native-vector-icons@npm:10.1.0"
   dependencies:
@@ -9746,7 +9746,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"realm@npm:^12.9.0":
+"realm@npm:12.9.0":
   version: 12.9.0
   resolution: "realm@npm:12.9.0"
   dependencies:
@@ -10563,7 +10563,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string-to-color@npm:^2.2.2":
+"string-to-color@npm:2.2.2":
   version: 2.2.2
   resolution: "string-to-color@npm:2.2.2"
   dependencies:

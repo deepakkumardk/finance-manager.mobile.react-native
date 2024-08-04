@@ -1,11 +1,11 @@
 import React, {memo} from 'react';
 import {Icon, Surface, Text} from 'react-native-paper';
-import {KeywordData} from '../types';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useAppTheme} from 'src/theme';
 import {APP_STRINGS} from 'src/constants';
 import {SmsHelper} from 'src/module';
 import {NumberUtils} from 'src/utils';
+import {KeywordData} from '../types';
 
 const TransactionItem = ({
   extractedData,
@@ -26,15 +26,15 @@ const TransactionItem = ({
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={() => onPress?.()}>
       <Surface mode={'flat'} style={styles.container}>
-        <Surface mode={'flat'}>
-          <Icon source="home" size={24} />
+        <Surface mode={'flat'} style={styles.contentIcon}>
+          <Icon source={userData.icon} size={24} />
         </Surface>
         <Surface mode={'flat'} style={styles.leftDetails}>
           <Text variant="bodyMedium">
-            {SmsHelper.formatSenderName(
-              extractedData.senderUpi,
-              extractedData.account,
-            ) || '-'}
+            {SmsHelper.formatSenderName({
+              senderName: extractedData.senderUpi,
+              accountNumber: extractedData.account,
+            }) || '-'}
           </Text>
           <Text variant="bodySmall" style={{color: colors.primary}}>
             {userData.category}
@@ -71,6 +71,9 @@ const TransactionItem = ({
 export default memo(TransactionItem);
 
 const styles = StyleSheet.create({
+  contentIcon: {
+    paddingHorizontal: 4,
+  },
   leftDetails: {
     flex: 1,
     paddingHorizontal: 8,

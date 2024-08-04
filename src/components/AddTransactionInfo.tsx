@@ -1,32 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {
-  Button,
-  Chip,
-  Modal,
-  Portal,
-  Surface,
-  Text,
-  TextInput,
-} from 'react-native-paper';
+import {Button, Chip, Surface, Text, TextInput} from 'react-native-paper';
 import CategoryPicker from './CategoryPicker';
 import {APP_STRINGS, TRANSACTION_CATEGORY} from 'src/constants';
 import {useSmsModel} from 'src/hooks';
 import {useAppTheme} from 'src/theme';
-import {KeywordData} from 'src/types';
+import {AddTransactionProps} from 'src/types';
 import {NumberUtils} from 'src/utils';
+import {getMostUsedTags} from 'src/module';
 
 export const AddTransactionInfo = ({
-  visible,
   item,
   onSubmit,
   onDismiss,
-}: {
-  visible: boolean;
-  item?: KeywordData;
-  onSubmit: (data: KeywordData) => void;
-  onDismiss: () => void;
-}) => {
+}: AddTransactionProps) => {
   const {colors} = useAppTheme();
 
   const [showMessage, setShowMessage] = useState(true);
@@ -42,148 +29,165 @@ export const AddTransactionInfo = ({
 
   const [category, setCategory] = useState(item?.userData?.category || '');
   const [tags, setTags] = useState(item?.userData?.tags || '');
+  const [comment, setComment] = useState(item?.userData?.comment || '');
   // const categoryRef = useRef(category);
-  const iconRef = useRef(category);
+  // const iconRef = useRef(category);
   const {createOrUpdate} = useSmsModel();
 
   const onSavePress = () => {
     const smsModel = {
       category,
+      // TODO update it for dynamic icon
+      icon:
+        TRANSACTION_CATEGORY.find(_item => _item.label === category)?.icon ||
+        '',
       date: item?.rawSms.date ?? '',
+      comment,
       tags,
     };
     createOrUpdate(smsModel);
+
+    // @ts-ignore
+    onSubmit({
+      ...item,
+      userData: smsModel,
+    });
     onDismiss();
   };
 
-  useEffect(() => {
-    if (!visible) {
-      return;
-    }
-  }, [visible]);
+  const onSuggestedTagPress = (tag: string) => {
+    setTags(prev => {
+      if (prev.split(',').includes(tag)) {
+        return prev;
+      }
+      return prev.concat(',' + tag);
+    });
+  };
 
   return (
-    <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.containerStyle,
+    <Surface mode="flat" style={{backgroundColor: colors.background}}>
+      <Text variant="titleMedium" style={styles.center}>
+        {'Add Transaction Info'}
+      </Text>
+      <Button
+        mode="text"
+        compact={true}
+        style={styles.createNew}
+        labelStyle={styles.smallText}
+        onPress={() => setShowMessage(prev => !prev)}>
+        {showMessage ? 'Hide' : 'Show'}
+        {' Message'}
+      </Button>
+      {showMessage ? (
+        <Text style={{color: colors.onSurfaceDisabled}}>
+          {item?.rawSms.body}
+        </Text>
+      ) : null}
+
+      <Surface
+        mode="flat"
+        style={[styles.textApart, {backgroundColor: colors.background}]}>
+        <Text variant="labelSmall">
+          {debitCreditText === '+' ? 'From' : 'To'}
+        </Text>
+        <Text>{item?.extractedData.senderUpi || 'N/A'}</Text>
+      </Surface>
+      <Surface
+        mode="flat"
+        style={[styles.textApart, {backgroundColor: colors.background}]}>
+        <Text variant="labelSmall">{'Amount'}</Text>
+        <Text
+          style={[
+            {
+              color: debitCreditText === '+' ? colors.success : colors.error,
+            },
+            styles.debitCreditText,
+          ]}>
+          {debitCreditText +
+            APP_STRINGS.RS +
+            NumberUtils.formatNumber(item?.extractedData?.amount)}
+        </Text>
+      </Surface>
+      {item?.extractedData.availableBalance ? (
+        <Surface
+          mode="flat"
+          style={[styles.textApart, {backgroundColor: colors.background}]}>
+          <Text variant="labelSmall">{'Balance at that time'}</Text>
+          <Text>{item?.extractedData.availableBalance}</Text>
+        </Surface>
+      ) : null}
+
+      <CategoryPicker
+        category={item?.userData.category}
+        items={categoryList}
+        onChange={(value: string) => setCategory(value)}
+      />
+      <Button icon={'plus'} compact style={styles.createNew}>
+        {'Create New'}
+      </Button>
+      <Text variant="labelSmall">{'Pick From most used tags'}</Text>
+      <ScrollView horizontal>
+        <Surface
+          style={[styles.row, {backgroundColor: colors.background}]}
+          mode="flat">
+          {getMostUsedTags(tags).map(tag => (
+            <Chip
+              key={tag}
+              style={styles.chip}
+              onPress={() => onSuggestedTagPress(tag)}>
+              {'#'}
+              {tag}
+            </Chip>
+          ))}
+        </Surface>
+      </ScrollView>
+      <TextInput
+        style={styles.input}
+        label="Tags"
+        placeholder="Comma (,) separated tags"
+        value={tags}
+        onChangeText={value => setTags(value)}
+      />
+      <ScrollView horizontal>
+        <Surface
+          style={[styles.row, {backgroundColor: colors.background}]}
+          mode="flat">
+          {tags &&
+            tags.split(',').map(tag => (
+              <Chip key={tag} compact mode="outlined" style={styles.chip}>
+                {'#'}
+                {tag}
+              </Chip>
+            ))}
+        </Surface>
+      </ScrollView>
+      <TextInput
+        style={styles.input}
+        label="Comment"
+        placeholder="Comment"
+        value={comment}
+        onChangeText={value => setComment(value)}
+      />
+      <Surface
+        mode="flat"
+        style={[
+          styles.row,
+          styles.input,
+          styles.buttonContainer,
           {backgroundColor: colors.background},
         ]}>
-        <Text variant="titleMedium" style={styles.center}>
-          {'Add Transaction Info'}
-        </Text>
-        <Button
-          mode="text"
-          compact={true}
-          style={styles.createNew}
-          labelStyle={styles.smallText}
-          onPress={() => setShowMessage(prev => !prev)}>
-          {showMessage ? 'Hide' : 'Show'}
-          {' Message'}
+        <Button mode="outlined" style={styles.button} onPress={onDismiss}>
+          {'Cancel'}
         </Button>
-        {showMessage ? (
-          <Text style={{color: colors.onSurfaceDisabled}}>
-            {item?.rawSms.body}
-          </Text>
-        ) : null}
-
-        <Surface mode="flat" style={{backgroundColor: colors.background}}>
-          <Surface
-            mode="flat"
-            style={[styles.textApart, {backgroundColor: colors.background}]}>
-            <Text variant="labelSmall">
-              {debitCreditText === '+' ? 'From' : 'To'}
-            </Text>
-            <Text>{item?.extractedData.senderUpi || 'N/A'}</Text>
-          </Surface>
-          <Surface
-            mode="flat"
-            style={[styles.textApart, {backgroundColor: colors.background}]}>
-            <Text variant="labelSmall">{'Amount'}</Text>
-            <Text
-              style={[
-                {
-                  color:
-                    debitCreditText === '+' ? colors.success : colors.error,
-                },
-                styles.debitCreditText,
-              ]}>
-              {debitCreditText +
-                APP_STRINGS.RS +
-                NumberUtils.formatNumber(item?.extractedData?.amount)}
-            </Text>
-          </Surface>
-          {item?.extractedData.availableBalance ? (
-            <Surface
-              mode="flat"
-              style={[styles.textApart, {backgroundColor: colors.background}]}>
-              <Text variant="labelSmall">{'Balance at that time'}</Text>
-              <Text>{item?.extractedData.availableBalance}</Text>
-            </Surface>
-          ) : null}
-
-          <CategoryPicker
-            category={item?.userData.category}
-            items={categoryList}
-            onChange={(value: string) => setCategory(value)}
-          />
-          <Button icon={'plus'} style={styles.createNew}>
-            {'Create New'}
-          </Button>
-          <TextInput
-            label="Tags"
-            placeholder="Comma (,) separated tags"
-            value={tags}
-            onChangeText={value => setTags(value)}
-          />
-          <ScrollView horizontal>
-            <Surface
-              style={[styles.row, {backgroundColor: colors.background}]}
-              mode="flat">
-              {tags &&
-                tags.split(',').map(tag => (
-                  <Chip key={tag} style={styles.chip}>
-                    {'#'}
-                    {tag}
-                  </Chip>
-                ))}
-            </Surface>
-          </ScrollView>
-          <Surface
-            mode="flat"
-            style={[
-              styles.row,
-              styles.input,
-              styles.buttonContainer,
-              {backgroundColor: colors.background},
-            ]}>
-            <Button mode="outlined" style={styles.button} onPress={onDismiss}>
-              {'Cancel'}
-            </Button>
-            <Button
-              disabled={!category}
-              mode="contained"
-              style={styles.button}
-              onPress={() => {
-                onSavePress();
-                // @ts-ignore
-                onSubmit({
-                  ...item,
-                  userData: {
-                    category,
-                    icon: iconRef.current,
-                    tags: tags,
-                  },
-                });
-              }}>
-              {'Save'}
-            </Button>
-          </Surface>
-        </Surface>
-      </Modal>
-    </Portal>
+        <Button
+          disabled={!category}
+          mode="contained"
+          style={styles.button}
+          onPress={onSavePress}>
+          {'Save'}
+        </Button>
+      </Surface>
+    </Surface>
   );
 };
 
@@ -215,7 +219,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   input: {
-    marginVertical: 8,
+    marginVertical: 5,
   },
   row: {
     flexDirection: 'row',

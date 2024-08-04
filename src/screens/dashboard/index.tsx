@@ -5,7 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {AccountDataInfo, KeywordData} from 'src/types';
 import {AllAccountsCarousel} from './components/AllAccountsCarousel';
 import {ActivityIndicator, Button, Surface, Text} from 'react-native-paper';
-import {AddTransactionInfo, TransactionItem} from 'src/components';
+import {AddTransactionModal, TransactionItem} from 'src/components';
 import {APP_STRINGS} from 'src/constants';
 import {useSmsData} from 'src/context';
 import {useTransactionUpdate} from 'src/hooks';
@@ -76,7 +76,7 @@ export const Dashboard = ({navigation}: any) => {
           )}
         />
         {showModal && (
-          <AddTransactionInfo
+          <AddTransactionModal
             visible={showModal}
             item={selectedItem}
             onSubmit={data => {

@@ -11,8 +11,13 @@ export class SmsModel extends Realm.Object<SmsModel> {
     properties: {
       date: 'string',
 
-      category: {type: 'string', indexed: 'full-text'},
       tags: {type: 'string', optional: true, indexed: 'full-text'},
+      comment: {type: 'string', optional: true, indexed: 'full-text'},
+
+      // UserData will be saved as it is like categoryInfo
+      category: {type: 'string', default: 'Misc', indexed: 'full-text'},
+      icon: {type: 'string', default: 'puzzle'},
+      color: {type: 'string', optional: true},
 
       created_at: {
         type: 'int',

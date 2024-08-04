@@ -3,6 +3,8 @@ import {type KeywordData} from '../types';
 import {SMSData} from './SMSData';
 import {default as smsSenders} from './smsSenders.json';
 import {financeFeatureExtractor} from './financeDataExtractor';
+import {StringUtils} from './StringUtils';
+import {SmsHelper} from 'src/module/SmsHelper';
 
 const sendersCodeList = Object.keys(smsSenders);
 
@@ -13,6 +15,11 @@ export const getBankNameCodeMap = () => {
   });
   return bankNameCodeMap;
 };
+
+let mostUsedTags: string[] = [];
+
+export const getMostUsedTags = (currentTags: string) =>
+  mostUsedTags.filter(usedTag => !currentTags.split(',').includes(usedTag));
 
 export const getTransformedSmsList = (smsList: SMSData[], dbSmsList: any[]) => {
   const dbSmsMap: any = {};
@@ -48,6 +55,7 @@ export const getTransformedSmsList = (smsList: SMSData[], dbSmsList: any[]) => {
     }))
     .forEach(sms => {
       const extractedData = financeFeatureExtractor(sms.body);
+      const categoryInfo = SmsHelper.findAutoCategory(sms.body);
       const obj =
         extractedData?.type &&
         ({
@@ -57,15 +65,23 @@ export const getTransformedSmsList = (smsList: SMSData[], dbSmsList: any[]) => {
           extractedData,
           userData: {
             ...dbSmsMap[sms.date],
-            category: dbSmsMap[sms.date]?.category || 'Misc',
+            tags: dbSmsMap[sms.date]?.tags || SmsHelper.findAutoTags(sms.body),
+            category: dbSmsMap[sms.date]?.category || categoryInfo.label,
+            icon: dbSmsMap[sms.date]?.icon || categoryInfo.icon,
+            color: categoryInfo.color,
           },
         } as KeywordData);
+
+      mostUsedTags.push(obj?.userData?.tags || '');
+
       const prevList = bankWiseSmsData[sms.fullBankName]?.list ?? [];
       bankWiseSmsData[sms.fullBankName] = {
         fullBankName: sms.fullBankName,
         list: obj ? [...prevList, obj] : prevList,
       };
     });
+
+  mostUsedTags = StringUtils.getTopTags(mostUsedTags, 10);
 
   return bankWiseSmsData;
 };

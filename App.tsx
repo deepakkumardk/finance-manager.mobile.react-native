@@ -39,23 +39,23 @@ function App(): React.ReactNode {
   const theme = isDarkMode ? CombinedDarkTheme : CombinedDefaultTheme;
 
   return (
-    <PaperProvider
-      theme={theme}
-      settings={{
-        rippleEffectEnabled: true,
-      }}>
-      <RealmProvider schema={[SmsModel]}>
+    <RealmProvider schema={[SmsModel]} schemaVersion={7}>
+      <PaperProvider
+        theme={theme}
+        settings={{
+          rippleEffectEnabled: true,
+        }}>
         <NavigationContainer theme={theme}>
           <StatusBar
-            barStyle={!isDarkMode ? 'dark-content' : 'light-content'}
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
             backgroundColor={theme.colors.background}
           />
           <SmsDataProvider>
             <RootNavigator />
           </SmsDataProvider>
         </NavigationContainer>
-      </RealmProvider>
-    </PaperProvider>
+      </PaperProvider>
+    </RealmProvider>
   );
 }
 

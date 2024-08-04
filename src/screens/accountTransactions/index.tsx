@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {AccountDataInfo, KeywordData} from 'src/types';
-import {AddTransactionInfo, TransactionItem} from 'src/components';
+import {AddTransactionModal, TransactionItem} from 'src/components';
 import AccountCard from 'src/screens/dashboard/components/AccountCard';
 import {Chip, Surface} from 'react-native-paper';
 import {HeaderWithSearch} from './components/HeaderWithSearch';
@@ -68,27 +68,28 @@ export const AccountTransactions = ({_, route}: any) => {
   }, []);
 
   const onQueryChange = useCallback((query: string) => {
-    if (query) {
-      const list = showAllTransactions
-        ? allTransactions
-        : accountSummary?.list ?? [];
-
-      setTransactionsList(
-        list.filter((item: KeywordData) => {
-          const contains = (text?: string) =>
-            text?.toLowerCase()?.includes(query.toLowerCase());
-
-          return (
-            (item.extractedData.type === 'Debit' ||
-              item.extractedData.type === 'Credit') &&
-            (contains(item.extractedData.senderUpi) ||
-              contains(item.userData.category) ||
-              contains(item.userData.tags))
-          );
-        }),
-      );
+    if (!query.trim()) {
       return;
     }
+    const list = showAllTransactions
+      ? allTransactions
+      : accountSummary?.list ?? [];
+
+    setTransactionsList(
+      list.filter((item: KeywordData) => {
+        const contains = (text?: string) =>
+          text?.toLowerCase()?.includes(query.trim().toLowerCase());
+
+        return (
+          (item.extractedData.type === 'Debit' ||
+            item.extractedData.type === 'Credit') &&
+          (contains(item.extractedData.senderUpi) ||
+            contains(item.userData.category) ||
+            contains(item.userData.tags) ||
+            contains(item.rawSms.body))
+        );
+      }),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,7 +127,7 @@ export const AccountTransactions = ({_, route}: any) => {
         estimatedItemSize={10}
       />
       {showModal && (
-        <AddTransactionInfo
+        <AddTransactionModal
           visible={showModal}
           item={selectedItem}
           onSubmit={data => {

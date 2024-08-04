@@ -11,7 +11,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const allIcons = Object.keys(MaterialIcons.getRawGlyphMap());
 
-const IconsPicker = ({
+const IconPicker = ({
   onSelect,
 }: {
   onSelect: ({icon}: {icon: string}) => void;
@@ -57,6 +57,8 @@ const IconsPicker = ({
   );
 };
 
+export default IconPicker;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -83,5 +85,3 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
-
-export default IconsPicker;

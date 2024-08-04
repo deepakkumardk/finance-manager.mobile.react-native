@@ -1,5 +1,10 @@
 import {SMSData} from './module';
 
+export type SubjectProp = {
+  type: string;
+  data?: any;
+};
+
 export type BankDataInfo = {
   [key: string]: AccountDataInfo;
 };

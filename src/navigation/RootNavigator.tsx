@@ -7,9 +7,10 @@ import {Stats} from 'src/screens/stats';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import {Settings} from 'src/screens/settings';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {CreateNew} from 'src/screens/createNew';
+// import {CreateNew} from 'src/screens/createNew';
 import {commonHeaderStyle} from 'src/navigation/commonHeaderStyle';
 import {useTheme} from 'react-native-paper';
+import {SplashScreen} from 'src/screens/splashScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,7 +63,7 @@ const BottomTabs = () => {
           tabBarIcon: (props: any) => getTabIcon({...props, name: 'pie-chart'}),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="CreateNew"
         component={CreateNew}
         options={{
@@ -71,7 +72,7 @@ const BottomTabs = () => {
           tabBarIcon: (props: any) =>
             getTabIcon({...props, name: 'add-circle'}),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Settings"
         component={Settings}
@@ -89,6 +90,14 @@ export const RootNavigator = ({}: any) => {
 
   return (
     <Stack.Navigator screenOptions={{...commonHeaderStyle(colors)}}>
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+
       <Stack.Screen
         name="BottomTabs"
         component={BottomTabs}

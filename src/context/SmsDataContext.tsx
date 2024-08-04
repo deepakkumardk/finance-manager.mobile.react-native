@@ -5,6 +5,8 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import {globalEmitter} from 'src/common';
+import {GLOBAL_EVENTS} from 'src/constants';
 import {useSmsModel} from 'src/hooks';
 import {SmsModule} from 'src/module';
 import {AccountDataInfo, KeywordData, SmsDataContextProps} from 'src/types';
@@ -46,6 +48,7 @@ export const SmsDataProvider = ({children}: PropsWithChildren) => {
     setAllTransactions(res.allTransactions);
     // setIsLoading(false);
     console.log('initData -> res.allTransactions', res.allTransactions.length);
+    globalEmitter.emit(GLOBAL_EVENTS.INIT_DATA_SUCCESS);
   };
 
   useEffect(() => {

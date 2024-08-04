@@ -44,8 +44,9 @@ export const AddTransactionModal = ({
 
 const styles = StyleSheet.create({
   divider: {
-    width: '10%',
-    height: 8,
+    width: '20%',
+    height: 6,
+    marginBottom: 10,
     alignSelf: 'center',
   },
   containerStyle: {

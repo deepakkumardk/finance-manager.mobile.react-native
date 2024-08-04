@@ -9,6 +9,10 @@ export const AppSingletons = {
   accounts: [] as Partial<AccountDataInfo>[],
 };
 
+export const GLOBAL_EVENTS = {
+  INIT_DATA_SUCCESS: 'INIT_DATA_SUCCESS',
+};
+
 export const TRANSACTION_CATEGORY: CategoryProps[] = [
   {label: 'Misc', icon: 'puzzle', color: ''},
   {label: 'Bills', icon: 'note-text', color: ''},

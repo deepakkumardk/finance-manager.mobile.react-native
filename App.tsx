@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StatusBar, useColorScheme} from 'react-native';
 
 import {RootNavigator} from './src/navigation/RootNavigator';
@@ -19,6 +19,9 @@ import {AppDarkTheme, AppLightTheme} from 'src/theme';
 import {RealmProvider} from '@realm/react';
 import {SmsModel} from 'src/workflow/database';
 import {SmsDataProvider} from 'src/context';
+import {globalEmitter, STORAGE_KEYS, useEventEmitter} from 'src/common';
+import {GLOBAL_EVENTS} from 'src/constants';
+import {useMMKVString} from 'react-native-mmkv';
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -36,19 +39,48 @@ const CombinedDarkTheme = merge(
 
 function App(): React.ReactNode {
   const isDarkMode = useColorScheme() === 'dark';
-  const theme = isDarkMode ? CombinedDarkTheme : CombinedDefaultTheme;
+
+  const [appThemeStorage = 'System Default'] = useMMKVString(
+    STORAGE_KEYS.APP_THEME,
+  );
+
+  const [isAppInDarkMode, setIsAppInDarkMode] = useState(
+    isDarkMode || appThemeStorage === 'Dark',
+  );
+  const theme = isAppInDarkMode ? CombinedDarkTheme : CombinedDefaultTheme;
+
+  const [appTheme, setAppTheme] = useState(theme);
+
+  const onThemeChange = (darkMode: boolean) => {
+    setIsAppInDarkMode(darkMode);
+    setAppTheme(darkMode ? CombinedDarkTheme : CombinedDefaultTheme);
+  };
+
+  useEventEmitter(globalEmitter, event => {
+    switch (event.type) {
+      case GLOBAL_EVENTS.ON_THEME_CHANGE:
+        onThemeChange(event.data.isDarkMode);
+        break;
+    }
+  });
+
+  useEffect(() => {
+    if (appThemeStorage === 'System Default') {
+      onThemeChange(isDarkMode);
+    }
+  }, [isDarkMode, appThemeStorage]);
 
   return (
     <RealmProvider schema={[SmsModel]} schemaVersion={7}>
       <PaperProvider
-        theme={theme}
+        theme={appTheme}
         settings={{
           rippleEffectEnabled: true,
         }}>
-        <NavigationContainer theme={theme}>
+        <NavigationContainer theme={appTheme}>
           <StatusBar
-            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-            backgroundColor={theme.colors.background}
+            barStyle={isAppInDarkMode ? 'light-content' : 'dark-content'}
+            backgroundColor={appTheme.colors.background}
           />
           <SmsDataProvider>
             <RootNavigator />

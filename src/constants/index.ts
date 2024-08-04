@@ -11,6 +11,7 @@ export const AppSingletons = {
 
 export const GLOBAL_EVENTS = {
   INIT_DATA_SUCCESS: 'INIT_DATA_SUCCESS',
+  ON_THEME_CHANGE: 'ON_THEME_CHANGE',
 };
 
 export const TRANSACTION_CATEGORY: CategoryProps[] = [

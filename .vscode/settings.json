@@ -5,6 +5,7 @@
         "finnancemanager",
         "luxon",
         "millis",
+        "MMKV",
         "updation"
     ]
 }

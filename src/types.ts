@@ -69,3 +69,9 @@ export type AddTransactionProps = {
   onSubmit: (data: KeywordData) => void;
   onDismiss: () => void;
 };
+
+export type ThemeModalProps = {
+  visible: boolean;
+  onDismiss: () => void;
+  onDonePress: (value: string, isDarkMode: boolean) => void;
+};

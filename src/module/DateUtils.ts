@@ -18,6 +18,9 @@ function addOrdinalSuffix(day: number) {
 
 export const DateUtils = {
   format: (millis: any, format: string = 'd LLL, HH:mm') => {
+    if (!millis) {
+      return '';
+    }
     const inputDate = DateTime.fromMillis(parseInt(millis));
     const currentYear = DateTime.now().year;
     let newFormat = format;

@@ -41,11 +41,10 @@ export const getTransformedSmsList = (smsList: SMSData[], dbSmsList: any[]) => {
       };
     })
     .filter(
-      (item: any) => sendersCodeList.includes(item.address),
+      (item: SMSData) => sendersCodeList.includes(item.address),
       // DEV conditions to debug only
       // __DEV__ &&
       // // @ts-ignore
-      // smsSenders[item.address].includes('Kotak'),
     )
     .map(item => ({
       ...item,
@@ -53,6 +52,7 @@ export const getTransformedSmsList = (smsList: SMSData[], dbSmsList: any[]) => {
       fullBankName: smsSenders[item.address],
       date_display: DateUtils.format(item.date),
     }))
+    // .filter(item => item.fullBankName.includes('Kotak'))
     .forEach(sms => {
       const extractedData = financeFeatureExtractor(sms.body);
       const categoryInfo = SmsHelper.findAutoCategory(sms.body);

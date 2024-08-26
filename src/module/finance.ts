@@ -68,12 +68,24 @@ const getAccountWiseSmsData = (bankWiseSmsData: BankDataInfo) => {
           item.rawSms.date,
         );
 
+        const setReportedDateDisplay = () => {
+          if (item.rawSms.date?.isNumber()) {
+            accountData.reportedDateDisplay = item.rawSms.date;
+          } else {
+            console.warn(
+              'setReportedDateDisplay -> is not a number',
+              item.rawSms.date,
+            );
+          }
+        };
+
         // Start of calculate availableBalance
         if (item.extractedData.type === 'Debit') {
           accountData.availableBalance -= Number(item.extractedData.amount);
 
           if (accountData.availableBalance > 0) {
-            accountData.reportedDateDisplay = item.rawSms.date;
+            setReportedDateDisplay();
+            // accountData.reportedDateDisplay = item.rawSms.date;
           }
 
           if (isCurrentMonth) {
@@ -85,7 +97,8 @@ const getAccountWiseSmsData = (bankWiseSmsData: BankDataInfo) => {
           accountData.availableBalance += Number(item.extractedData.amount);
 
           if (accountData.availableBalance > 0) {
-            accountData.reportedDateDisplay = item.rawSms.date;
+            setReportedDateDisplay();
+            // accountData.reportedDateDisplay = item.rawSms.date;
           }
 
           if (isCurrentMonth) {
@@ -99,14 +112,17 @@ const getAccountWiseSmsData = (bankWiseSmsData: BankDataInfo) => {
         ) {
           accountData.availableBalance = accountData.lastReportedBalance =
             Number(item.extractedData.availableBalance);
-          accountData.reportedDateDisplay = item.rawSms.date;
+          setReportedDateDisplay();
+          // accountData.reportedDateDisplay = item.rawSms.date;
         }
         // End of calculate availableBalance
 
-        accountData.reportedDateDisplay = DateUtils.format(
-          accountData.reportedDateDisplay,
-          'd LLL',
-        );
+        if (accountData.reportedDateDisplay?.isNumber()) {
+          accountData.reportedDateDisplay = DateUtils.format(
+            accountData.reportedDateDisplay,
+            'd LLL',
+          );
+        }
         accountData.list = [...accountData.list, item];
 
         accountWiseSmsData[formattedAccount] = accountData;

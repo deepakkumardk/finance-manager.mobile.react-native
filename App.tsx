@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import 'src/extensions';
 import React, {useEffect, useState} from 'react';
 import {StatusBar, useColorScheme} from 'react-native';
 

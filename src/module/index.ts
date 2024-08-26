@@ -1,3 +1,4 @@
+export {StringUtils} from './StringUtils';
 export {SmsModule} from './SmsModule';
 export {DateUtils} from './DateUtils';
 export {SmsHelper} from './SmsHelper';

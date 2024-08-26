@@ -37,7 +37,7 @@ export const HeaderWithSearch = ({
 
   useEffect(() => {
     if (debouncedQuery) {
-      onQueryChange(debouncedQuery);
+      onQueryChange(debouncedQuery.trim().toLowerCase());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQuery]);
@@ -49,6 +49,7 @@ export const HeaderWithSearch = ({
         <Searchbar
           style={styles.searchbar}
           placeholder="Search"
+          autoCapitalize="none"
           value={searchQuery}
           onChangeText={setSearchQuery}
         />

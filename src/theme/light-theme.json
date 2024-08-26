@@ -40,6 +40,11 @@
     "surfaceDisabled": "rgba(27, 27, 31, 0.12)",
     "onSurfaceDisabled": "rgba(27, 27, 31, 0.38)",
     "backdrop": "rgba(46, 48, 56, 0.4)",
+
+    "warn": "rgb(121, 89, 0)",
+    "onWarn": "rgb(255, 255, 255)",
+    "warnContainer": "rgb(255, 223, 160)",
+    "onWarnContainer": "rgb(38, 26, 0)",
     "success": "rgb(16, 109, 32)",
     "onSuccess": "rgb(255, 255, 255)",
     "successContainer": "rgb(157, 248, 152)",

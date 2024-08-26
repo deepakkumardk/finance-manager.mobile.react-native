@@ -28,6 +28,7 @@ export const AccountTransactions = ({_, route}: any) => {
   const [selectedType, setSelectedType] = useState('All');
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<KeywordData>();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const selectedTypeRef = useRef(selectedType);
 
@@ -68,6 +69,7 @@ export const AccountTransactions = ({_, route}: any) => {
   }, []);
 
   const onQueryChange = useCallback((query: string) => {
+    setSearchQuery(query);
     if (!query.trim()) {
       return;
     }
@@ -118,6 +120,7 @@ export const AccountTransactions = ({_, route}: any) => {
         renderItem={({item}) => (
           <TransactionItem
             {...item}
+            query={searchQuery}
             onPress={() => {
               setSelectedItem(item);
               setShowModal(true);

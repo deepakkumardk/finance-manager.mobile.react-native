@@ -12,7 +12,7 @@ export const SplashScreen = ({navigation}: any) => {
   useEventEmitter(globalEmitter, event => {
     switch (event.type) {
       case GLOBAL_EVENTS.INIT_DATA_SUCCESS:
-        navigation.navigate('BottomTabs');
+        navigation.replace('BottomTabs');
         break;
     }
   });

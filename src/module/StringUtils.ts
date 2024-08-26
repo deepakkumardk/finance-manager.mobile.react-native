@@ -16,4 +16,38 @@ export const StringUtils = {
 
     return sortedTags.slice(0, topN);
   },
+
+  splitStringByQuery: (inputStr: string, query: string) => {
+    if (!query) {
+      return [inputStr];
+    }
+    const indexes = [...inputStr.matchAll(new RegExp(query, 'gi'))].map(
+      value => value.index,
+    ) as number[];
+    const outputStrArray: string[] = [];
+    let fromIndex = 0;
+
+    indexes.forEach(valueIndex => {
+      if (!valueIndex) {
+        return;
+      }
+      const strLeft = inputStr.substring(fromIndex, valueIndex);
+      if (strLeft) {
+        outputStrArray.push(strLeft);
+      }
+
+      const strRight = inputStr.substring(
+        valueIndex,
+        valueIndex + query.length,
+      );
+      if (strRight) {
+        outputStrArray.push(strRight);
+      }
+
+      fromIndex = valueIndex + query.length;
+    });
+    outputStrArray.push(inputStr.substring(fromIndex));
+
+    return outputStrArray;
+  },
 };

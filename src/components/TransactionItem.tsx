@@ -6,13 +6,16 @@ import {APP_STRINGS} from 'src/constants';
 import {SmsHelper} from 'src/module';
 import {NumberUtils} from 'src/utils';
 import {KeywordData} from '../types';
+import {HighlightText} from 'src/components';
 
 const TransactionItem = ({
   extractedData,
   rawSms,
   userData,
   onPress,
+  query = '',
 }: KeywordData & {
+  query?: string;
   onPress?: () => void;
 }) => {
   const {colors} = useAppTheme();
@@ -30,38 +33,48 @@ const TransactionItem = ({
           <Icon source={userData.icon} size={24} />
         </Surface>
         <Surface mode={'flat'} style={styles.leftDetails}>
-          <Text variant="bodyMedium">
+          <HighlightText variant="bodyMedium" query={query}>
             {SmsHelper.formatSenderName({
               senderName: extractedData.senderUpi,
               accountNumber: extractedData.account,
             }) || '-'}
-          </Text>
-          <Text variant="bodySmall" style={{color: colors.primary}}>
-            {userData.category}
+          </HighlightText>
+
+          <Surface mode="flat" style={styles.row}>
+            <HighlightText
+              variant="bodySmall"
+              style={{color: colors.primary}}
+              query={query}>
+              {userData.category}
+            </HighlightText>
             <Text style={{color: colors.onSurfaceDisabled}}>
               {' • '}
               {rawSms?.date_display}
             </Text>
-          </Text>
+          </Surface>
+
           {__DEV__ ? (
-            <Text style={{color: colors.onSurfaceDisabled}}>
+            <HighlightText
+              style={{color: colors.onSurfaceDisabled}}
+              query={query}>
               {rawSms?.body}
-            </Text>
+            </HighlightText>
           ) : null}
           <Text>{extractedData.bankName}</Text>
         </Surface>
         <Surface mode={'flat'}>
-          <Text
+          <HighlightText
             style={[
               {
                 color: debitCreditText === '+' ? colors.success : colors.error,
               },
               styles.debitCreditText,
-            ]}>
+            ]}
+            query={query}>
             {debitCreditText +
               APP_STRINGS.RS +
               NumberUtils.formatNumber(extractedData?.amount)}
-          </Text>
+          </HighlightText>
         </Surface>
       </Surface>
     </TouchableOpacity>
@@ -77,6 +90,10 @@ const styles = StyleSheet.create({
   leftDetails: {
     flex: 1,
     paddingHorizontal: 8,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   container: {
     flexDirection: 'row',

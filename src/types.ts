@@ -1,3 +1,4 @@
+import {TextProps} from 'react-native-paper';
 import {SMSData} from './module';
 
 export type SubjectProp = {
@@ -75,3 +76,9 @@ export type ThemeModalProps = {
   onDismiss: () => void;
   onDonePress: (value: string, isDarkMode: boolean) => void;
 };
+
+// Component Props
+export interface HighlightTextProps extends TextProps<string> {
+  children: string;
+  query?: string;
+}

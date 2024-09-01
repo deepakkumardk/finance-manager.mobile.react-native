@@ -73,21 +73,25 @@ function App(): React.ReactNode {
 
   return (
     <RealmProvider schema={[SmsModel]} schemaVersion={7}>
-      <PaperProvider
-        theme={appTheme}
-        settings={{
-          rippleEffectEnabled: true,
-        }}>
-        <NavigationContainer theme={appTheme}>
-          <StatusBar
-            barStyle={isAppInDarkMode ? 'light-content' : 'dark-content'}
-            backgroundColor={appTheme.colors.background}
-          />
-          <SmsDataProvider>
+      <SmsDataProvider>
+        <NavigationContainer
+          theme={appTheme}
+          onReady={() => {
+            console.log('App -> onReady');
+          }}>
+          <PaperProvider
+            theme={appTheme}
+            settings={{
+              rippleEffectEnabled: true,
+            }}>
+            <StatusBar
+              barStyle={isAppInDarkMode ? 'light-content' : 'dark-content'}
+              backgroundColor={appTheme.colors.background}
+            />
             <RootNavigator />
-          </SmsDataProvider>
+          </PaperProvider>
         </NavigationContainer>
-      </PaperProvider>
+      </SmsDataProvider>
     </RealmProvider>
   );
 }

@@ -33,12 +33,14 @@ export type KeywordData = {
   date_debug?: string;
   rawSms: SMSData;
   extractedData: FinanceDataProps;
-  userData: {
-    category: string;
-    icon: string;
-    tags: string;
-    comment: string;
-  };
+  userData: DbSmsUserData;
+};
+
+export type DbSmsUserData = {
+  category: string;
+  icon: string;
+  tags: string;
+  comment: string;
 };
 
 export type FinanceDataProps = {
@@ -69,6 +71,13 @@ export type AddTransactionProps = {
   item?: KeywordData;
   onSubmit: (data: KeywordData) => void;
   onDismiss: () => void;
+  onCustomRulePress?: () => void;
+};
+
+export type FilterModalProps = {
+  visible: boolean;
+  onSubmit: (categories: string[], tags: []) => void;
+  onDismiss: () => void;
 };
 
 export type ThemeModalProps = {
@@ -82,3 +91,17 @@ export interface HighlightTextProps extends TextProps<string> {
   children: string;
   query?: string;
 }
+
+export interface SelectPickerProps {
+  options: any[];
+  defaultValue?: string;
+  onSelect?: (item: any) => {};
+  labelKey?: string;
+  valueKey?: string;
+}
+
+export type CustomRuleFilter = {
+  withAllBanks: boolean;
+  withAllTransactions: boolean;
+  withFutureTransactions: boolean;
+};

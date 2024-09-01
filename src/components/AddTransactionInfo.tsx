@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import {Button, Chip, Surface, Text, TextInput} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+
 import CategoryPicker from './CategoryPicker';
 import {APP_STRINGS, TRANSACTION_CATEGORY} from 'src/constants';
 import {useSmsModel} from 'src/hooks';
@@ -8,6 +10,7 @@ import {useAppTheme} from 'src/theme';
 import {AddTransactionProps} from 'src/types';
 import {NumberUtils} from 'src/utils';
 import {getMostUsedTags} from 'src/module';
+import {STRINGS} from './strings';
 
 export const AddTransactionInfo = ({
   item,
@@ -16,9 +19,9 @@ export const AddTransactionInfo = ({
 }: AddTransactionProps) => {
   const {colors} = useAppTheme();
 
+  const navigation = useNavigation();
+
   const [showMessage, setShowMessage] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [categoryList, setCategoryList] = useState(TRANSACTION_CATEGORY);
 
   const debitCreditText =
     item?.extractedData.type === 'Credit'
@@ -118,8 +121,7 @@ export const AddTransactionInfo = ({
       ) : null}
 
       <CategoryPicker
-        category={item?.userData.category}
-        items={categoryList}
+        defaultValue={item?.userData.category}
         onChange={(value: string) => setCategory(value)}
       />
       <Button icon={'plus'} compact style={styles.createNew}>
@@ -177,16 +179,29 @@ export const AddTransactionInfo = ({
           {backgroundColor: colors.background},
         ]}>
         <Button mode="outlined" style={styles.button} onPress={onDismiss}>
-          {'Cancel'}
+          {'Close'}
         </Button>
         <Button
           disabled={!category}
-          mode="contained"
+          mode="contained-tonal"
           style={styles.button}
           onPress={onSavePress}>
           {'Save'}
         </Button>
       </Surface>
+
+      <Text>{STRINGS.SIMILAR_TRANSACTIONS}</Text>
+      <Button
+        mode="contained"
+        style={styles.button}
+        icon={{source: 'bell-ring-outline', direction: 'ltr'}}
+        onPress={() => {
+          onDismiss();
+          // @ts-ignore
+          navigation.navigate('CreateCustomRule', {item});
+        }}>
+        {STRINGS.CUSTOM_RULE}
+      </Button>
     </Surface>
   );
 };

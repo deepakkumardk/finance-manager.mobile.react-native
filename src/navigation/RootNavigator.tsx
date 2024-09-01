@@ -11,6 +11,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {commonHeaderStyle} from 'src/navigation/commonHeaderStyle';
 import {useTheme} from 'react-native-paper';
 import {SplashScreen} from 'src/screens/splashScreen';
+import {CreateCustomRule} from 'src/screens/customRule/CreateCustomRule';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -109,6 +110,11 @@ export const RootNavigator = ({}: any) => {
         name="AccountTransactions"
         component={AccountTransactions}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CreateCustomRule"
+        component={CreateCustomRule}
+        options={{title: 'Create Custom Rule'}}
       />
     </Stack.Navigator>
   );

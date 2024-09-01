@@ -3,21 +3,21 @@ import {StyleSheet, TouchableOpacity, useColorScheme} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import {Icon, Surface, Text, useTheme} from 'react-native-paper';
-import {TRANSACTION_CATEGORY} from 'src/constants';
+import {SelectPickerProps} from 'src/types';
 
-const CategoryPicker = ({
+export const SelectPicker = ({
+  options,
   defaultValue,
-  onChange,
-}: {
-  defaultValue?: string;
-  onChange: (item: any) => void;
-}) => {
+  labelKey = 'label',
+  valueKey = 'value',
+  onSelect,
+}: SelectPickerProps) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const {colors} = useTheme();
 
-  const getItemsList = (items: any[]) => {
-    return items.map(item => ({
+  const getItemsList = () => {
+    return options.map(item => ({
       label: item.label,
       value: item,
     }));
@@ -25,14 +25,16 @@ const CategoryPicker = ({
 
   const [open, setOpen] = useState(false);
 
-  const [categoryList, setCategoryList] = useState(
-    getItemsList(TRANSACTION_CATEGORY),
-  );
+  const [optionsList, setOptionsList] = useState(getItemsList());
   const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
-    onChange(value);
-  }, [onChange, value]);
+    onSelect?.(value);
+  }, [onSelect, value]);
+
+  useEffect(() => {
+    setOptionsList(getItemsList());
+  }, [options]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const renderItem = ({item}: {item: any}) => {
@@ -58,8 +60,8 @@ const CategoryPicker = ({
       open={open}
       value={value}
       schema={{
-        label: 'label',
-        value: 'label',
+        label: labelKey,
+        value: valueKey,
         icon: 'icon',
       }}
       props={{
@@ -69,10 +71,10 @@ const CategoryPicker = ({
         color: colors.outline,
       }}
       containerStyle={styles.picker}
-      items={categoryList}
+      items={optionsList}
       setOpen={setOpen}
       setValue={setValue}
-      setItems={setCategoryList}
+      setItems={setOptionsList}
       //   renderListItem={renderItem}
       itemKey="label"
       closeAfterSelecting={true}
@@ -81,8 +83,6 @@ const CategoryPicker = ({
     />
   );
 };
-
-export default CategoryPicker;
 
 const styles = StyleSheet.create({
   picker: {

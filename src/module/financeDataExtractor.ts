@@ -74,6 +74,10 @@ export const financeFeatureExtractor = (text: string) => {
   //   }
   //
   let senderUpi = extractor.getSenderName();
+
+  if (amount === availableBalance) {
+    senderUpi = '-';
+  }
   //
   //   const accountWordRegex = /((account|a\/c|AC)(\s*no.)?)\s*/gi;
   //   const accountNumberRegex = /[\*|x]+\d+/gi;

@@ -5,6 +5,7 @@ import {default as smsSenders} from './smsSenders.json';
 import {financeFeatureExtractor} from './financeDataExtractor';
 import {StringUtils} from './StringUtils';
 import {SmsHelper} from 'src/module/SmsHelper';
+import {SmsModel} from 'src/workflow/database';
 
 const sendersCodeList = Object.keys(smsSenders);
 
@@ -21,7 +22,12 @@ let mostUsedTags: string[] = [];
 export const getMostUsedTags = (currentTags: string) =>
   mostUsedTags.filter(usedTag => !currentTags.split(',').includes(usedTag));
 
-export const getTransformedSmsList = (smsList: SMSData[], dbSmsList: any[]) => {
+export const getTransformedSmsList = (
+  smsList: SMSData[],
+  dbSmsList: SmsModel[],
+) => {
+  // const categoryList = [];
+  // const tagsList = [];
   const dbSmsMap: any = {};
   dbSmsList.forEach(dbItem => {
     dbSmsMap[dbItem.date] = dbItem;
@@ -40,12 +46,7 @@ export const getTransformedSmsList = (smsList: SMSData[], dbSmsList: any[]) => {
         address: newAddress,
       };
     })
-    .filter(
-      (item: SMSData) => sendersCodeList.includes(item.address),
-      // DEV conditions to debug only
-      // __DEV__ &&
-      // // @ts-ignore
-    )
+    .filter((item: SMSData) => sendersCodeList.includes(item.address))
     .map(item => ({
       ...item,
       // @ts-ignore

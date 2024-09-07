@@ -46,7 +46,7 @@ export class DataExtractor {
   }
   getAvailableBalance() {
     const availableBalanceTextRegex =
-      /((available|avl|avlbl|new|avail)\.?\s*(balance|bal|Amt)\.?\s*(is)?(\:)?\s*)/gi;
+      /((combined|available|avl|avlbl|new|avail)\.?\s*(balance|bal|Amt)\.?\s*(is)?(\:)?\s*)/gi;
     const availableBalanceRegex = new RegExp(
       availableBalanceTextRegex.source + this._amountRegex.source,
       this._amountRegex.flags,

@@ -7,6 +7,7 @@ export const APP_STRINGS = {
 
 export const AppSingletons = {
   accounts: [] as Partial<AccountDataInfo>[],
+  enableDebugging: __DEV__,
 };
 
 export const GLOBAL_EVENTS = {

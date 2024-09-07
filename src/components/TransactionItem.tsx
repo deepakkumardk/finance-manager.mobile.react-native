@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {Icon, Surface, Text} from 'react-native-paper';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useAppTheme} from 'src/theme';
-import {APP_STRINGS} from 'src/constants';
+import {APP_STRINGS, AppSingletons} from 'src/constants';
 import {SmsHelper} from 'src/module';
 import {NumberUtils} from 'src/utils';
 import {KeywordData} from '../types';
@@ -53,12 +53,15 @@ const TransactionItem = ({
             </Text>
           </Surface>
 
-          {__DEV__ ? (
+          {AppSingletons.enableDebugging ? (
             <HighlightText
               style={{color: colors.onSurfaceDisabled}}
               query={query}>
               {rawSms?.body}
             </HighlightText>
+          ) : null}
+          {AppSingletons.enableDebugging ? (
+            <Text>{extractedData.availableBalance}</Text>
           ) : null}
           <Text>{extractedData.bankName}</Text>
         </Surface>
@@ -66,7 +69,12 @@ const TransactionItem = ({
           <HighlightText
             style={[
               {
-                color: debitCreditText === '+' ? colors.success : colors.error,
+                color:
+                  debitCreditText === '+'
+                    ? colors.success
+                    : debitCreditText === '-'
+                    ? colors.error
+                    : undefined,
               },
               styles.debitCreditText,
             ]}

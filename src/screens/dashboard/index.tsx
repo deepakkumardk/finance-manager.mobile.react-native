@@ -6,7 +6,7 @@ import {AccountDataInfo, KeywordData} from 'src/types';
 import {AllAccountsCarousel} from './components/AllAccountsCarousel';
 import {ActivityIndicator, Button, Surface, Text} from 'react-native-paper';
 import {AddTransactionModal, TransactionItem} from 'src/components';
-import {APP_STRINGS} from 'src/constants';
+import {APP_STRINGS, AppSingletons} from 'src/constants';
 import {useSmsData} from 'src/context';
 import {useTransactionUpdate} from 'src/hooks';
 
@@ -62,7 +62,11 @@ export const Dashboard = ({navigation}: any) => {
         <FlatList
           contentContainerStyle={styles.list}
           data={allTransactions
-            .filter(item => item.extractedData.type !== 'Balance')
+            .filter(item =>
+              AppSingletons.enableDebugging
+                ? item
+                : item.extractedData.type !== 'Balance',
+            )
             .slice(0, 20)}
           keyExtractor={item => item.rawSms.date}
           renderItem={({item}) => (

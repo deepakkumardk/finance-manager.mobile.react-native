@@ -112,7 +112,7 @@ export class DataExtractor {
 
   getAccount() {
     const accountWordRegex = /((account|a\/c|AC)(\s*no.)?)\s*/gi;
-    const accountNumberRegex = /[\*|x]+\d+/gi;
+    const accountNumberRegex = /\d*[\*|x]+\d+/gi;
     const bankAccountRegex = new RegExp(
       accountWordRegex.source + accountNumberRegex.source,
       accountWordRegex.flags,

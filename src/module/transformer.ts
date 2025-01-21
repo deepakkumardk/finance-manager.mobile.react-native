@@ -53,7 +53,6 @@ export const getTransformedSmsList = (
       fullBankName: smsSenders[item.address],
       date_display: DateUtils.format(item.date),
     }))
-    // .filter(item => item.fullBankName.includes('Kotak'))
     .forEach(sms => {
       const extractedData = financeFeatureExtractor(sms.body);
       const categoryInfo = SmsHelper.findAutoCategory(sms.body);

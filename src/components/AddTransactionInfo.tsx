@@ -178,12 +178,15 @@ export const AddTransactionInfo = ({
           styles.buttonContainer,
           {backgroundColor: colors.background},
         ]}>
-        <Button mode="outlined" style={styles.button} onPress={onDismiss}>
+        <Button
+          mode="contained-tonal"
+          style={styles.button}
+          onPress={onDismiss}>
           {'Close'}
         </Button>
         <Button
           disabled={!category}
-          mode="contained-tonal"
+          mode="contained"
           style={styles.button}
           onPress={onSavePress}>
           {'Save'}
@@ -192,7 +195,7 @@ export const AddTransactionInfo = ({
 
       <Text>{STRINGS.SIMILAR_TRANSACTIONS}</Text>
       <Button
-        mode="contained"
+        mode="outlined"
         style={styles.button}
         icon={{source: 'bell-ring-outline', direction: 'ltr'}}
         onPress={() => {
@@ -227,7 +230,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    marginHorizontal: 4,
+    margin: 8,
   },
   createNew: {
     justifyContent: 'flex-end',

@@ -72,7 +72,7 @@ function App(): React.ReactNode {
   }, [isDarkMode, appThemeStorage]);
 
   return (
-    <RealmProvider schema={[SmsModel]} schemaVersion={7}>
+    <RealmProvider schema={[SmsModel]} schemaVersion={10}>
       <SmsDataProvider>
         <NavigationContainer
           theme={appTheme}

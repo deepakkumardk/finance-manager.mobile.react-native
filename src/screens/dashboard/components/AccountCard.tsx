@@ -54,8 +54,13 @@ const AccountCard = ({
                   : colors.secondaryContainer,
               },
             ]}>
-            <Text style={{color: colors.success}}>
-              <Icon source={'trending-up'} size={16} color={colors.success} />
+            <Text
+              style={{color: dark ? colors.successContainer : colors.success}}>
+              <Icon
+                source={'trending-up'}
+                size={16}
+                color={dark ? colors.successContainer : colors.success}
+              />
               {' in'}
             </Text>
             <Text style={{color: colors.shadow}}>
@@ -65,8 +70,12 @@ const AccountCard = ({
             <Divider
               style={[styles.divider, {backgroundColor: colors.surface}]}
             />
-            <Text style={{color: colors.error}}>
-              <Icon source={'trending-down'} size={16} color={colors.error} />
+            <Text style={{color: dark ? colors.errorContainer : colors.error}}>
+              <Icon
+                source={'trending-down'}
+                size={16}
+                color={dark ? colors.errorContainer : colors.error}
+              />
               {' out'}
             </Text>
             <Text style={{color: colors.shadow}}>

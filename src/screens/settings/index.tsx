@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Checkbox, Surface, Text} from 'react-native-paper';
+import {Checkbox, Divider, Surface, Text} from 'react-native-paper';
 import {useMMKVString} from 'react-native-mmkv';
 
 import {globalEmitter, STORAGE_KEYS} from 'src/common';
@@ -32,7 +32,7 @@ export const Settings = ({navigation}: any) => {
       activeOpacity={0.5}
       style={styles.row}
       onPress={withCheckbox ? undefined : onPress}>
-      <Surface style={styles.settingItem}>
+      <Surface mode="flat" style={styles.settingItem}>
         <Text variant="bodyLarge">{title}</Text>
         <Text variant="labelSmall">{subtitle}</Text>
       </Surface>
@@ -62,10 +62,12 @@ export const Settings = ({navigation}: any) => {
           subtitle={appTheme ?? 'System Default'}
           onPress={() => setShouldShowThemeModal(true)}
         />
+        <Divider />
         <SettingItem
           title="Custom Rules"
           onPress={() => navigation.navigate('CustomRules')}
         />
+        <Divider />
         {__DEV__ && (
           <SettingItem title={STRINGS.ENABLE_DEBUGGING} withCheckbox />
         )}
@@ -78,6 +80,7 @@ export const Settings = ({navigation}: any) => {
             globalEmitter.emit(GLOBAL_EVENTS.ON_THEME_CHANGE, {isDarkMode});
           }}
         />
+        <Divider />
       </Surface>
     </SafeAreaView>
   );
